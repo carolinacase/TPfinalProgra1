@@ -37,6 +37,9 @@
 		<Unit filename="TpFinalPROGRA1.depend" />
 		<Unit filename="TpFinalPROGRA1.layout" />
 		<Unit filename="Vehiculos.h" />
+		<Unit filename="clientes.c">
+			<Option compilerVar="CC" />
+		</Unit>
 		<Unit filename="main.c">
 			<Option compilerVar="CC" />
 		</Unit>
