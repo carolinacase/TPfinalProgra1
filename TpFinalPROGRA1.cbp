@@ -31,9 +31,15 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
+		<Unit filename="AlquilerDeVehiculo.h" />
+		<Unit filename="TpFinalPROGRA1.cbp" />
+		<Unit filename="TpFinalPROGRA1.depend" />
+		<Unit filename="TpFinalPROGRA1.layout" />
+		<Unit filename="Vehiculos.h" />
 		<Unit filename="main.c">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="vehiculos.bin" />
 		<Extensions>
 			<lib_finder disable_auto="1" />
 		</Extensions>
