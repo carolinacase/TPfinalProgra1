@@ -9,3 +9,17 @@
 	<stdlib.h>
 	<string.h>
 
+1781394266 source:c:\users\caro\documents\github\tpfinalprogra1\main.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"Clientes.h"
+
+1781394266 c:\users\caro\documents\github\tpfinalprogra1\clientes.h
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+
+1781393639 source:c:\users\caro\documents\github\tpfinalprogra1\clientes.c
+	"Clientes.h"
+

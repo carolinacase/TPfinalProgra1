@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <Clientes.h>
+#include "Clientes.h"
 
 #define MAX_VEHICULOS 20 //Agregué dimension para el arreglo estatico para cargar vehiculos (flota).
 #define DIM_PATENTE 8
@@ -19,21 +19,19 @@ int main()
 
     do
     {
-        printf("\n---------------SISTEMA DE ALQUILER DE VEHICULOS------------------------\n");
+        printf("\n------SISTEMA DE ALQUILER DE VEHICULOS------\n");
         printf("1. Gestion de vehiculos\n");
         printf("2. Gestion de clientes\n");
-        printf("3. Realizar alquiler\n");
-        printf("4. Devolver vehiculo\n");
-        printf("5. Listados\n");
+        printf("3. Gestion de Alquileres\n");
         printf("0. Salir\n");
-        printf("----------------------------------------\n");
+        printf("----------------------------------------------\n");
         printf("Ingrese una opcion: ");
         scanf("%d", &opcion);
 
         switch(opcion)
         {
         case 1:
-            menuVehiculos(archivoVehiculos);
+            //menuVehiculos(archivoVehiculos);
             break;
         case 2:
             menuClientes(archivoClientes);
