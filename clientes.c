@@ -104,7 +104,7 @@ void MostrarClientes(char nombreArchivo[])
             printf("  No hay clientes registrados.\n");
         else
             printf("  Total de clientes activos: %d\n", contador);
-        printf("---------------------------------------------------------------\n");
+        printf("------------------------- --------------------------------------\n");
 
         fclose(archi);
     }
@@ -113,3 +113,6 @@ void MostrarClientes(char nombreArchivo[])
         printf("Error: no se pudo abrir el archivo.\n");
     }
 }
+
+
+
