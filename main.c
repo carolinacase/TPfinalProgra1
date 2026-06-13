@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+#define MAX_VEHICULOS 20 //Agregué dimension para el arreglo estatico para cargar vehiculos (flota).
 #define DIM_PATENTE 8
 #define DIM_STRINGS 30
 
@@ -124,12 +125,13 @@ void menuVehiculos(char nombreArchivo[])
     do
     {
         printf("\n--- MENU VEHICULOS ---\n");
-        printf("1. Alta de vehiculo\n");
-        printf("2. Baja de vehiculo\n");
-        printf("3. Mostrar todos los vehiculos\n");
-        printf("4. Modificar vehiculo\n");
-        printf("5. Ordenar Vehiculos (por insercion)\n"); //Ordenar - numericamente por insercion segun Kilometraje
+        printf("1. Cargar vehiculo\n");
+        printf("2. Eliminar vehiculo\n");
+        printf("3. Modificar vehiculo\n");
+        printf("4. Buscar vehiculo\n");
+        printf("5. Ordenar Vehiculos\n");
         printf("0. Salir\n");
+
         printf("Ingrese una opcion: ");
         scanf("%d", &opcion);
 
@@ -148,7 +150,7 @@ void menuVehiculos(char nombreArchivo[])
             modificarVehiculo(nombreArchivo);
             break;
         case 5:
-            OrdenarPorInsercion(nombreArchivo);
+        //OrdenarPorInsercion(nombreArchivo);
         case 0:
             printf("Salir\n");
             break;
@@ -330,9 +332,12 @@ void MostrarVehiculos(char nombreArchivo[])
                 printf("  Modelo:        %s\n",     aux.modelo);
                 printf("  Kilometraje:   %d km\n",  aux.kilometraje);
                 printf("  Precio/dia:    $%.2f\n",  aux.precioPorDia);
-                if (aux.disponible == 1){
+                if (aux.disponible == 1)
+                {
                     printf("DISPONIBLE");
-                }else{
+                }
+                else
+                {
                     printf("OCUPADO");
                 }
             }
@@ -507,7 +512,7 @@ void MostrarClientes(char nombreArchivo[])
 // FUNCIONES DE ALQUILER DE VEHICULOS
 // ---------------------------------------------------------------
 // Genera un ID que se incrementa buscando el ultimo en el archivo
-int obtenerNuevoId(char nombreArchivo[])
+/*int obtenerNuevoId(char nombreArchivo[])
 {
     FILE *archi = NULL;
     stAlquiler aux;
@@ -540,15 +545,16 @@ stAlquiler Alquiler ()
 
     aux.idAlquiler = obtenerNuevoId(char nombreArchivo[])
 
-    int idAlquiler;
+                     int idAlquiler;
     char fecha_inicio[11];
     char fecha_fin[11];
     int cantDias;
     float totalCosto;
     int dadoDeBaja;
 
-}
-int RegistroDeAlquiler (char ArchivoClientes[], char ArchivoVehiculos[])
+}*/
+
+/*int RegistroDeAlquiler (char ArchivoClientes[], char ArchivoVehiculos[])
 {
 
 
@@ -562,222 +568,6 @@ int RegistroDeAlquiler (char ArchivoClientes[], char ArchivoVehiculos[])
 
 
         }
-
-int main()
-{
-    system("color 5f");
-
-    char nombreFile[DIMENARCHIVO] = "peliculas.bin";
-
-    //Cargar el archivo
-    //alta(nombreFile);
-
-    //Mostrar el archivo
-    mostrarArchivo(nombreFile);
-
-    //Borrar una pelicula
-//    baja(nombreFile);
-//    mostrarArchivo(nombreFile);
-
-    return 0;
-}
-
-//Cargar el archivo
-void alta(char nombreArchivo[])
-{
-    stPelicula aux;
-
-    char continuar = 's';
-
-    int peliculaRepetida = 0;
-
-    char nameMovie[DIMENSTRINGS];
-
-    do
-    {
-        do
-        {
-            printf("Ingrese el nombre de la pelicula: ");
-            fflush(stdin);
-            fgets(nameMovie, DIMENSTRINGS, stdin);
-
-            peliculaRepetida = validarPelicula(nombreArchivo, nameMovie);
-
-            if(peliculaRepetida == 1)
-            {
-                printf("PELICULA YA CARGADA, INGRESE OTRA\n");
-            }
-        }
-        while(peliculaRepetida == 1);
-
-        strcpy(aux.nombrePelicula, nameMovie);
-
-        cargarPelicula(&aux);
-
-        aux.idPelicula = indice(nombreArchivo) + 1;
-
-        FILE *archi = NULL;
-
-        archi = fopen(nombreArchivo, "ab");
-
-        if(archi != NULL)
-        {
-            fwrite(&aux, sizeof(stPelicula), 1, archi);
-            fclose(archi);
-        }
-
-        printf("Desea cargar otra pelicula? (s/n): ");
-        fflush(stdin);
-        scanf(" %c", &continuar);
-    }
-    while(continuar == 's');
-}
-
-//Verificar que no este la peli repetida
-
-}
-
-//Cargar una pelicula
-void cargarPelicula(stPelicula *movie)
-{
-    printf("Ingrese el director de la pelicula: ");
-    fflush(stdin);
-    fgets(movie->director, DIMENSTRINGS, stdin);
-
-    printf("Ingrese el genero de la pelicula: ");
-    fflush(stdin);
-    fgets(movie->genero, DIMENSTRINGS, stdin);
-
-    printf("Ingrese el pais de la pelicula: ");
-    fflush(stdin);
-    fgets(movie->pais, DIMENSTRINGS, stdin);
-
-    printf("Ingrese el anio de la pelicula: ");
-    scanf("%d", &movie->anio);
-
-    printf("Ingrese el valoracion de la pelicula: ");
-    scanf("%d", &movie->valoracion);
-
-    printf("Ingrese la PM de la pelicula: ");
-    scanf("%d", &movie->pm);
-
-    movie->eliminado = 0;
-}
-
-//Mostrar el archivo
-void mostrarArchivo(char nombreArchivo[])
-{
-    stPelicula aux;
-
-    int idVisual = 1;
-
-    FILE *archi = NULL;
-
-    archi = fopen(nombreArchivo, "rb");
-
-    if(archi != NULL)
-    {
-        while(fread(&aux, sizeof(stPelicula), 1, archi) > 0)
-        {
-            if(aux.eliminado != 1)
-            {
-                printf("\n--- PELICULA %d ---\n", idVisual);
-
-                mostrarPelicula(aux);
-
-                idVisual++;
-            }
-        }
-        fclose(archi);
-    }
-    else
-    {
-        printf("Error\n");
-    }
-}
-
-//Mostra una pelicula
-void mostrarPelicula(stPelicula movie)
-{
-    printf("Nombre: %s", movie.nombrePelicula);
-    printf("Director: %s", movie.director);
-    printf("Genero: %s", movie.genero);
-    printf("Pais: %s", movie.pais);
-    printf("Anio: %d\n", movie.anio);
-    printf("Valoracion: %d\n", movie.valoracion);
-    printf("PM: %d\n", movie.pm);
-    printf("(ID de Registro del Sistema: %d)\n", movie.idPelicula);
-}
-
-//Numero de pelicula
-int indice(char nombreArchivo[])
-{
-    int posicion = 0;
-
-    FILE *archi = NULL;
-
-    archi = fopen(nombreArchivo, "rb");
-
-    if(archi != NULL)
-    {
-        fseek(archi, 0, SEEK_END);
-
-        posicion = ftell(archi) / sizeof(stPelicula);
-
-        fclose(archi);
-    }
-    else
-    {
-        posicion = 0;
-    }
-
-    return posicion;
-}
-
-//Eliminar una pelicula
-void baja(char nombreArchivo[])
-{
-    int peliElegida = 0;
-    int encontrado = 0;
-
-    stPelicula aux;
-
-    FILE *archi = NULL;
-
-    archi = fopen(nombreArchivo, "r+b");
-
-    if(archi != NULL)
-    {
-        printf("Ingrese el indice de la pelicula a eliminar: ");
-        fflush(stdin);
-        scanf("%d", &peliElegida);
-
-        while(fread(&aux, sizeof(stPelicula), 1, archi) > 0 && encontrado == 0)
-        {
-            if(peliElegida == aux.idPelicula)
-            {
-                encontrado = 1;
-
-                fseek(archi, sizeof(stPelicula) * (-1), SEEK_CUR);
-
-                aux.eliminado = 1;
-
-                fwrite(&aux, sizeof(stPelicula), 1, archi);
-
-                fseek(archi, 0, SEEK_CUR);
-            }
-        }
-        fclose(archi);
-
-        if(encontrado == 0)
-        {
-            printf("\n[Error] No se encontro ninguna pelicula con el ID %d.\n", peliElegida);
-        }
-    }
-    else
-    {
-        printf("No se pudo abrir el archivo\n");
-    }
-}
+}*/
 
 
