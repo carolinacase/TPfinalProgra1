@@ -32,6 +32,7 @@
 			<Add option="-Wall" />
 		</Compiler>
 		<Unit filename="AlquilerDeVehiculo.h" />
+		<Unit filename="Clientes.h" />
 		<Unit filename="TpFinalPROGRA1.cbp" />
 		<Unit filename="TpFinalPROGRA1.depend" />
 		<Unit filename="TpFinalPROGRA1.layout" />

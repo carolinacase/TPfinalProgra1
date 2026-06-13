@@ -8,14 +8,6 @@
 
 //--------------------------------STRUCTS--------------------------------
 
-typedef struct
-{
-    char nombre[DIM_STRINGS];
-    char apellido[DIM_STRINGS];
-    char dni[10];
-    char telefono[20];
-    int activo;
-} stCliente;
 
 typedef struct
 {
@@ -53,11 +45,6 @@ void altaVehiculo(char nombreArchivo[]);
 void bajaVehiculo(char nombreArchivo[]);
 void MostrarVehiculos(char nombreArchivo[]);
 void modificarVehiculo(char nombreArchivo[]);
-
-// Clientes
-stCliente cargarDatosDelCliente();
-void altaCliente(char nombreArchivo[]);
-void MostrarClientes(char nombreArchivo[]);
 
 // Alquiler
 
