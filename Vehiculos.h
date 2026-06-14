@@ -1,6 +1,13 @@
 #ifndef VEHICULOS_H_INCLUDED
 #define VEHICULOS_H_INCLUDED
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#define DIM_PATENTE 8
+#define DIM_STRINGS 30
+#define MAX_VEHICULOS 20
 
 typedef struct
 {
@@ -14,8 +21,8 @@ typedef struct
 } stVehiculo;
 
 // Vehiculos
-stVehiculo cargarVehiculo(char nombreArchivo[]);
 void menuVehiculos(char nombreArchivo[]);
+stVehiculo cargarVehiculo(char nombreArchivo[]);
 int obtenerNuevoId(char nombreArchivo[]);
 void altaVehiculo(char nombreArchivo[]);
 void bajaVehiculo(char nombreArchivo[]);

@@ -1,4 +1,4 @@
-
+#include "Vehiculos.h"
 // ------------------------------FUNCIONES DE VEHICULOS---------------------------------
 
 void menuVehiculos(char nombreArchivo[])

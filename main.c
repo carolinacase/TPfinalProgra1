@@ -1,13 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
+#include "Vehiculos.h"
+//ACA AGREGA TU CLIENTE.H
 
-#define MAX_VEHICULOS 20 //Agregué dimension para el arreglo estatico para cargar vehiculos (flota).
-#define DIM_PATENTE 8
-#define DIM_STRINGS 30
 
-/
-typedef struct
+
+/*typedef struct
 {
     int idAlquiler;
     int idCliente;
@@ -24,11 +22,11 @@ void menuClientes(char nombreArchivo[]);
 // Clientes
 stCliente cargarDatosDelCliente();
 void altaCliente(char nombreArchivo[]);
-void MostrarClientes(char nombreArchivo[]);
+void MostrarClientes(char nombreArchivo[]);*/
 
 int main()
 {
-    system("color 5f");
+    system("color 9f");
 
     char archivoVehiculos[]  = "vehiculos.bin";
     char archivoClientes[]   = "clientes.bin";
@@ -55,7 +53,7 @@ int main()
             menuVehiculos(archivoVehiculos);
             break;
         case 2:
-            menuClientes(archivoClientes);
+            //menuClientes(archivoClientes);
             break;
         case 3:
             printf("Realizar Alquiler\n");
@@ -67,19 +65,21 @@ int main()
             printf("Mostrar\n");
             break;
         case 0:
-            printf("\nSalir\n");
+            printf("\n¡Saludos!\n");
             break;
         default:
             printf("\nOpcion invalida. Intente de nuevo.\n");
             break;
         }
+        system("pause");
+        system("cls");
     }
     while(opcion != 0);
 
     return 0;
 }
 
-
+/*
 void menuClientes(char nombreArchivo[])
 {
     int opcion;
@@ -197,4 +197,4 @@ void MostrarClientes(char nombreArchivo[])
         printf("Error: no se pudo abrir el archivo.\n");
     }
 }
-
+*/
