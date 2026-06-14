@@ -7,7 +7,7 @@
 
 #define DIM_PATENTE 8
 #define DIM_STRINGS 30
-#define MAX_VEHICULOS 20
+#define DIM_VEHICULOS 20
 
 typedef struct
 {
@@ -21,10 +21,11 @@ typedef struct
 } stVehiculo;
 
 // Vehiculos
-void menuVehiculos(char nombreArchivo[]);
-stVehiculo cargarVehiculo(char nombreArchivo[]);
+void menuVehiculos(char nombreArchivo[], stVehiculo vehiculos[]);
+int contarVehiculosEnArchivo(char nombreArchivo[]);
+int cargarVehiculo(stVehiculo vehiculos[], int dimension, char nombreArchivo[]);
 int obtenerNuevoId(char nombreArchivo[]);
-void altaVehiculo(char nombreArchivo[]);
+void altaVehiculo(char nombreArchivo[], stVehiculo vehiculos[]);
 void bajaVehiculo(char nombreArchivo[]);
 void MostrarVehiculos(char nombreArchivo[]);
 void modificarVehiculo(char nombreArchivo[]);

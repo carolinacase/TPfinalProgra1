@@ -32,6 +32,8 @@ int main()
     char archivoClientes[]   = "clientes.bin";
     char archivoAlquileres[] = "alquileres.bin";
 
+    stVehiculo vehiculos[DIM_VEHICULOS];
+
     int opcion;
 
     do
@@ -50,7 +52,7 @@ int main()
         switch(opcion)
         {
         case 1:
-            menuVehiculos(archivoVehiculos);
+            menuVehiculos(archivoVehiculos, vehiculos);
             break;
         case 2:
             //menuClientes(archivoClientes);

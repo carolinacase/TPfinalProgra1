@@ -1,7 +1,7 @@
 #include "Vehiculos.h"
 // ------------------------------FUNCIONES DE VEHICULOS---------------------------------
 
-void menuVehiculos(char nombreArchivo[])
+void menuVehiculos(char nombreArchivo[], stVehiculo vehiculos[])
 {
     int opcion;
 
@@ -21,7 +21,7 @@ void menuVehiculos(char nombreArchivo[])
         switch(opcion)
         {
         case 1:
-            altaVehiculo(nombreArchivo);
+            altaVehiculo(nombreArchivo, vehiculos);
             break;
         case 2:
             bajaVehiculo(nombreArchivo);
@@ -45,75 +45,114 @@ void menuVehiculos(char nombreArchivo[])
     while(opcion != 0);
 }
 
-// Genera un ID que se incrementa buscando el ultimo en el archivo
-int obtenerNuevoId(char nombreArchivo[])
+//Contar los vehiculos que hay en el archivo
+int contarVehiculosEnArchivo(char nombreArchivo[])
 {
+    stVehiculo;
+    int cantidad = 0;
+
     FILE *archi = NULL;
-    stVehiculo aux;
-    int maxId = 0;
 
     archi = fopen(nombreArchivo, "rb");
-    if(archi != NULL)
-    {
-        while(fread(&aux, sizeof(stVehiculo), 1, archi) == 1)
-        {
-            if(aux.id > maxId)
-                maxId = aux.id;
-        }
-        fclose(archi);
-    }
-    return maxId + 1;
-}
-
-// Carga los datos de un vehiculo por teclado
-stVehiculo cargarVehiculo(char nombreArchivo[])
-{
-    stVehiculo vehiculo;
-
-    vehiculo.id = obtenerNuevoId(nombreArchivo);
-
-    printf("ID generado automaticamente: %d\n", vehiculo.id);
-
-    printf("Ingrese la marca: ");
-    fflush(stdin);
-    scanf(" %s", vehiculo.marca);
-
-    printf("Ingrese el modelo: ");
-    fflush(stdin);
-    scanf(" %s", vehiculo.modelo);
-
-    printf("Ingrese la patente: ");
-    fflush(stdin);
-    scanf(" %s", vehiculo.patente);
-
-    printf("Ingrese el kilometraje: ");
-    scanf("%d", &vehiculo.kilometraje);
-
-    printf("Ingrese el precio por dia: ");
-    scanf("%f", &vehiculo.precioPorDia);
-
-    vehiculo.disponible = 1; // disponible
-
-    return vehiculo;
-}
-
-// Alta: guarda un vehiculo nuevo en el archivo
-void altaVehiculo(char nombreArchivo[])
-{
-    stVehiculo nuevo = cargarVehiculo(nombreArchivo);
-
-    FILE *archi = fopen(nombreArchivo, "ab");
 
     if(archi != NULL)
     {
-        fwrite(&nuevo, sizeof(stVehiculo), 1, archi);
-        fclose(archi);
-        printf("Vehiculo dado de alta. EL nuevo ID es: %d\n", nuevo.id);
+        fseek(archi, 0, SEEK_END);
+
+        cantidad = ftell(archi) / sizeof(stVehiculo);
     }
     else
     {
-        printf("Error: no se pudo abrir el archivo.\n");
+        printf("\nError: no se pudo leer el archivo o está vacio\n");
     }
+
+    return cantidad;
+}
+
+// Genera un ID que se incrementa buscando el ultimo en el archivo
+int obtenerNuevoId(char nombreArchivo[])
+{
+    int id = 0;
+
+    FILE *archi = NULL;
+
+    archi = fopen(nombreArchivo, "rb");
+
+    if(archi != NULL)
+    {
+        fseek(archi, 0, SEEK_END);
+
+        id = ftell(archi) / sizeof(stVehiculo);
+
+        fclose(archi);
+    }
+    else
+    {
+        id = 0;
+    }
+
+    return id;
+}
+
+// Carga los datos de un vehiculo por teclado
+int cargarVehiculo(stVehiculo vehiculos[], int dimension, char nombreArchivo[])
+{
+    char continuar = 's';
+    int validos = 0;
+
+    for(validos; validos < dimension && continuar == 's'; validos++)
+    {
+        vehiculos[validos].id = obtenerNuevoId(nombreArchivo);
+
+        printf("ID: %d\n", vehiculos[validos].id);
+
+        printf("Ingrese la marca: ");
+        fflush(stdin);
+        fgets(vehiculos[validos].marca, DIM_STRINGS, stdin);
+
+        printf("Ingrese el modelo: ");
+        fflush(stdin);
+        fgets(vehiculos[validos].modelo, DIM_STRINGS, stdin);
+
+        printf("Ingrese el kilometraje: ");
+        scanf("%d", &vehiculos[validos].kilometraje);
+
+        printf("Ingrese el precio por dia: ");
+        scanf("%f", &vehiculos[validos].precioPorDia);
+
+        vehiculos[validos].disponible = 1; // disponible
+
+        printf("Desea seguir cargando (s/n): ");
+        scanf(" %c", &continuar);
+    }
+
+    return validos;
+}
+
+// Alta: guarda un vehiculo nuevo en el archivo
+void altaVehiculo(char nombreArchivo[], stVehiculo vehiculos[])
+{
+    int cantidadVehiculos = 0;
+
+    do
+    {
+        cantidadVehiculos = contarVehiculosEnArchivo(nombreArchivo);
+
+        if(cantidadVehiculos >= DIM_VEHICULOS)
+        {
+            printf("\nNo se pueden cargar mas autos");
+        }
+        else
+        {
+//            printf("Ingrese la patente: ");/*Esto*/
+//            fflush(stdin);                 /*es para*/
+//            scanf(" %s", vehiculo.patente); /*validar*/
+
+            int validosVehiculos = cargarVehiculo(vehiculos, DIM_VEHICULOS, nombreArchivo);
+
+        }
+    }
+    while(cantidadVehiculos < DIM_VEHICULOS);
 }
 
 // Baja logica: marca disponible = -1
