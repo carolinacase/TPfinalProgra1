@@ -7,6 +7,7 @@
 
 #define DIM_STRINGS 50
 #define DIM_DNI 10
+#define MAX_CLIENTES 100
 
 typedef struct
 {
@@ -25,5 +26,6 @@ void menuClientes(char nombreArchivo[]);
 void DarDeBajaUnCliente(char nombreArchivo[], char dniBuscado[]);
 void modificarTelefonoCliente(char nombreArchivo[], char dniBuscado[], char nuevoTelefono[]);
 void consultarCliente(char nombreArchivo[], char dniBuscado[]);
+void listarClientesAlfabetico(char nombreArchivo[]);
 
 #endif // CLIENTES_H_INCLUDED

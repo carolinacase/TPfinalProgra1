@@ -48,7 +48,10 @@ void menuClientes(char nombreArchivo[])
             printf("Ingrese el DNI del cliente para buscar:\n");
             fflush(stdin);
             scanf("%s", dniEncontrado);
-            consultarCliente(nombreArchivo , dniBuscado);
+            consultarCliente(nombreArchivo, dniBuscado);
+            break;
+        case 6:
+            listarClientesAlfabetico(nombreArchivo);
             break;
 
 
@@ -265,4 +268,78 @@ void consultarCliente(char nombreArchivo[], char dniBuscado[])
     {
         printf("Error: no se pudo abrir el archivo.\n");
     }
+}
+
+//○------------------------------ Listados --------------------------------
+//● Listar todos los datos por orden alfabético por el método de selección
+//(campo a elegir de acuerdo a las structs elegidas)
+//● Listar todos los datos por orden numérico por el método de inserción
+//(campo a elegir de acuerdo a las structs elegidas)
+//● Como opcional, y de forma adicional a lo anterior, pueden listar sólo los que
+//cumplan cierto criterio (listados con filtro - por ejemplo: todos los productos de
+//cierta categoría, todos los alumnos con nota del 6 al 8, etc)
+
+void PasarClientesAunArreglo(char nombreArchivo[])
+{
+    stCliente arreglo[MAX_CLIENTES];
+    int cantidad = 0;
+    stCliente aux;
+
+    // Cargar clientes activos en el arreglo
+    FILE *archi = fopen(nombreArchivo, "rb");
+    if(archi != NULL)
+    {
+        while(fread(&aux, sizeof(stCliente), 1, archi) > 0 && cantidad < MAX_CLIENTES)
+        {
+            if(aux.activo == 1)
+            {
+                arreglo[cantidad] = aux;
+                cantidad++;
+            }
+        }
+        fclose(archi);
+    }
+    else
+    {
+        printf("Error: no se pudo abrir el archivo.\n");
+        return;
+    }
+
+    if(cantidad == 0)
+    {
+        printf("No hay clientes registrados.\n");
+        return;
+    }
+
+
+
+}
+int OrdenarClientesPorSeleccion()
+{
+    // Ordenar por apellido - metodo seleccion
+    int i, j, minPos;
+    stCliente temp;
+    for(i = 0; i < cantidad - 1; i++)
+    {
+        minPos = i;
+        for(j = i + 1; j < cantidad; j++)
+        {
+            if(strcmp(arreglo[j].apellido, arreglo[minPos].apellido) < 0)
+                minPos = j;
+        }
+        if(minPos != i)
+        {
+            temp = arreglo[i];
+            arreglo[i] = arreglo[minPos];
+            arreglo[minPos] = temp;
+        }
+    }
+
+}
+
+void mostrarArrDeClientes()
+{
+    printf("\n--- CLIENTES ORDENADOS ALFABETICAMENTE ---\n");
+    for(i = 0; i < cantidad; i++)
+        mostrarUnCliente(arreglo[i]);
 }
