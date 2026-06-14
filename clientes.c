@@ -3,7 +3,10 @@
 void menuClientes(char nombreArchivo[])
 {
     int opcion;
-    char dniBuscado[10];
+    char dniBuscado[DIM_DNI];
+    char dniModificar[DIM_DNI];
+    char nuevoTel[DIM_DNI];
+    char dniEncontrado[DIM_DNI];
 
     do
     {
@@ -11,8 +14,10 @@ void menuClientes(char nombreArchivo[])
         printf("1. Alta de cliente\n"); //
         printf("2. Mostrar clientes\n");
         printf("3. Dar de baja un cliente\n");
+        printf("4. Modificar Contacto\n");
+        printf("5. Buscar Cliente por DNI\n");
         printf("0. Volver al menu principal\n");
-        printf("Ingrese una opcion: ");
+        printf("Ingrese una opcion:\n");
         scanf("%d", &opcion);
 
         switch(opcion)
@@ -24,11 +29,28 @@ void menuClientes(char nombreArchivo[])
             MostrarClientes(nombreArchivo);
             break;
         case 3:
-            printf("Ingrese el DNI del cliente que desea dar de baja: ");
+            printf("Ingrese el DNI del cliente que desea dar de baja:\n");
             fflush(stdin);
             scanf("%s", dniBuscado);
             DarDeBajaUnCliente(nombreArchivo, dniBuscado);
             break;
+
+        case 4:
+            printf("Ingrese el DNI del cliente a modificar:\n");
+            fflush(stdin);
+            scanf("%s", dniModificar);
+            printf("Ingrese el nuevo telefono: ");
+            fflush(stdin);
+            scanf("%s", nuevoTel);
+            modificarTelefonoCliente(nombreArchivo, dniModificar, nuevoTel);
+            break;
+        case 5:
+            printf("Ingrese el DNI del cliente para buscar:\n");
+            fflush(stdin);
+            scanf("%s", dniEncontrado);
+            consultarCliente(nombreArchivo , dniBuscado);
+            break;
+
 
         case 0:
             printf("Salir.\n");
@@ -41,59 +63,72 @@ void menuClientes(char nombreArchivo[])
     while(opcion != 0);
 }
 
-
 stCliente cargarDatosDelCliente()
 {
     stCliente cliente;
+    char confirmacion;
 
-    printf("Ingrese nombre: ");
-    fflush(stdin);
-    scanf(" %s", cliente.nombre);
+    do
+    {
+        printf("Ingrese nombre: ");
+        fflush(stdin);
+        scanf(" %s", cliente.nombre);
 
-    printf("Ingrese apellido: ");
-    fflush(stdin);
-    scanf(" %s", cliente.apellido);
+        printf("Ingrese apellido: ");
+        fflush(stdin);
+        scanf(" %s", cliente.apellido);
 
-    printf("Ingrese DNI: ");
-    fflush(stdin);
-    scanf(" %s", cliente.dni);
+        printf("Ingrese DNI: ");
+        fflush(stdin);
+        scanf(" %s", cliente.dni);
 
-    printf("Ingrese telefono: ");
-    fflush(stdin);
-    scanf(" %s", cliente.telefono);
+        printf("Ingrese telefono: ");
+        fflush(stdin);
+        scanf(" %s", cliente.telefono);
+
+        mostrarUnCliente(cliente);
+
+        printf("Seguro que los datos son correctos? (s/n):\n");
+        fflush(stdin);
+        scanf(" %c", &confirmacion);
+
+    }
+    while(confirmacion != 's' && confirmacion != 'S');
 
     cliente.activo = 1;
-
     return cliente;
 }
-////○ Alta
-////● Carga de Datos
+
 ////○ Verificar de no cargar repetidos
-////● Guardar en Archivo
+
 
 void altaCliente(char nombreArchivo[]) //Falta verificacion de carga repetida
 {
-    stCliente nuevo = cargarDatosDelCliente();
+    stCliente nuevo = cargarDatosDelCliente();////● Carga de Datos
 
     FILE *archi = fopen(nombreArchivo, "ab");
 
     if(archi != NULL)
     {
-        fwrite(&nuevo, sizeof(stCliente), 1, archi);
+        fwrite(&nuevo, sizeof(stCliente), 1, archi); //Escribe en el archivo
         fclose(archi);
-        printf("Cliente dado de alta correctamente.\n");
+        printf("Cliente dado de alta correctamente.\n");////○ Alta
     }
     else
     {
         printf("Error: no se pudo abrir el archivo.\n");
     }
+
+    close(archi);////● Guardar en Archivo
 }
 //-------------------------MOSTRAR CLIENTES-------------------------
 void mostrarUnCliente(stCliente unCliente)
 {
+    printf("-----------DATOS DEL CLIENTE-----------\n");
     printf("  Nombre:    %s %s\n", unCliente.nombre, unCliente.apellido);
     printf("  DNI:       %s\n", unCliente.dni);
     printf("  Telefono:  %s\n", unCliente.telefono);
+    printf("---------------------------------------\n");
 
 }
 
@@ -155,6 +190,73 @@ void DarDeBajaUnCliente(char nombreArchivo[], char dniBuscado[])
             }
         }
         fclose(archi); ////● Guardar los cambios en el archivo
+
+        if(dniEncontrado == 0)
+            printf("No se encontro ningun cliente con ese DNI.\n");
+    }
+    else
+    {
+        printf("Error: no se pudo abrir el archivo.\n");
+    }
+}
+//○ Modificación
+
+//----------------------MODIFICAR TELEFONO DEL CLIENTE -----------------
+//los demas datos no deberian ser modificados ya que dni y nombre del cliente no deberian cambiarse
+
+void modificarTelefonoCliente(char nombreArchivo[], char dniBuscado[], char nuevoTelefono[])
+{
+    int dniEncontrado = 0;
+    stCliente aux;
+
+    FILE *archi = fopen(nombreArchivo, "r+b");
+
+    if(archi != NULL)
+    {
+        while(fread(&aux, sizeof(stCliente), 1, archi) > 0 && dniEncontrado == 0)
+        {
+            if(strcmp(aux.dni, dniBuscado) == 0 && aux.activo == 1) //● Buscar dato
+            {
+                dniEncontrado = 1;
+                strcpy(aux.telefono, nuevoTelefono);
+                fseek(archi, sizeof(stCliente) * (-1), SEEK_CUR); //● Modificar dato
+                fwrite(&aux, sizeof(stCliente), 1, archi);
+                printf("Telefono modificado correctamente.\n");
+            }
+        }
+        fclose(archi);//● Guardar el dato modificado en el archivo
+
+        if(dniEncontrado == 0)
+            printf("No se encontro ningun cliente con ese DNI.\n");
+    }
+    else
+    {
+        printf("Error: no se pudo abrir el archivo.\n");
+    }
+}
+//○ Consulta
+//● Buscar una struct en particular de acuerdo a uno o varios campos a elección
+//del usuario del sistema y mostrar los distintos campos de la struct (por ejemplo:
+//buscar un empleado por su dni)
+
+void consultarCliente(char nombreArchivo[], char dniBuscado[])
+{
+    int dniEncontrado = 0;
+    stCliente aux;
+
+    FILE *archi = fopen(nombreArchivo, "rb");
+
+    if(archi != NULL)
+    {
+        while(fread(&aux, sizeof(stCliente), 1, archi) > 0 && dniEncontrado == 0)
+        {
+            if(strcmp(aux.dni, dniBuscado) == 0 && aux.activo == 1)
+            {
+                dniEncontrado = 1;
+                mostrarUnCliente(aux); //(búsqueda de un dato en particular y mostrado del mismo)
+            }
+        }
+        fclose(archi);
 
         if(dniEncontrado == 0)
             printf("No se encontro ningun cliente con ese DNI.\n");

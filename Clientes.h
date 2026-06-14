@@ -6,6 +6,7 @@
 #include <string.h>
 
 #define DIM_STRINGS 50
+#define DIM_DNI 10
 
 typedef struct
 {
@@ -22,5 +23,7 @@ void altaCliente(char nombreArchivo[]);
 void MostrarClientes(char nombreArchivo[]);
 void menuClientes(char nombreArchivo[]);
 void DarDeBajaUnCliente(char nombreArchivo[], char dniBuscado[]);
+void modificarTelefonoCliente(char nombreArchivo[], char dniBuscado[], char nuevoTelefono[]);
+void consultarCliente(char nombreArchivo[], char dniBuscado[]);
 
 #endif // CLIENTES_H_INCLUDED
