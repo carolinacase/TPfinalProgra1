@@ -6,8 +6,8 @@
 #include <string.h>
 
 #define DIM_PATENTE 8
-#define DIM_STRINGS 30
-#define DIM_VEHICULOS 20
+#define DIM_STRINGS 20
+#define DIM_VEHICULOS 4
 
 typedef struct
 {
@@ -17,18 +17,31 @@ typedef struct
     char modelo[DIM_STRINGS];
     int kilometraje;
     float precioPorDia;
-    int disponible; // 1 = disponible | 0 = alquilado | -1 = dado de baja
+    int eliminado; // 0 = no eliminado, 1 = eliminado
+    int disponible; // 0 = disponible, 1 = no disponible
 } stVehiculo;
 
-// Vehiculos
-void menuVehiculos(char nombreArchivo[], stVehiculo vehiculos[]);
+//FUNCION MENU
+void menuVehiculos(char nombreArchivo[]);
+
+//FUNCIONES PARA CARGAR VEHICULOS
+void altaVehiculo(char nombreArchivo[]);
+int validarPatenteEnArchivo(char nombreArchivo[], char dominio[]);
+void cargarVehiculo(stVehiculo *aux);
 int contarVehiculosEnArchivo(char nombreArchivo[]);
-int cargarVehiculo(stVehiculo vehiculos[], int dimension, char nombreArchivo[]);
 int obtenerNuevoId(char nombreArchivo[]);
-void altaVehiculo(char nombreArchivo[], stVehiculo vehiculos[]);
+
+//FUNCION PARA ELIMINAR VEHICULO
 void bajaVehiculo(char nombreArchivo[]);
-void MostrarVehiculos(char nombreArchivo[]);
+
+//FUNCION PARA MODIFICAR VEHICULO
 void modificarVehiculo(char nombreArchivo[]);
 
+//FUNCIONES PARA MOSTRAR VEHICULOS
+void mostrarVehiculos(char nombreArchivo[]);
+void mostrarVehiculosRecursivamente(FILE *archi, int contador);
+
+//FUNCIONES EXTRAS
+void limpiarSaltoLinea(char cadena[]);
 
 #endif // VEHICULOS_H_INCLUDED
