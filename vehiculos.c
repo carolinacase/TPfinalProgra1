@@ -31,8 +31,10 @@ void menuVehiculos(char nombreArchivo[])
             modificarVehiculo(nombreArchivo);
             break;
         case 4:
+            buscarYMostrarVehiculo(nombreArchivo);
             break;
         case 5:
+            menuOrdenacionVehiculos(nombreArchivo);
             break;
         case 6:
             mostrarVehiculos(nombreArchivo);
@@ -49,7 +51,7 @@ void menuVehiculos(char nombreArchivo[])
     while(opcion != 0);
 }
 
-// Alta: guarda un vehiculo nuevo en el archivo
+// ALTA: GUARDA UN VEHICULO NUEVO EN EL ARCHIVO
 void altaVehiculo(char nombreArchivo[])
 {
     int patenteRepetidaArchivo = 0;
@@ -150,7 +152,7 @@ int validarPatenteEnArchivo(char nombreArchivo[], char dominio[])
     return encontrado;
 }
 
-// Carga los datos de un vehiculo por teclado
+// CARGA LOS DATOS DE UN VEHICULO POR TECLADO
 void cargarVehiculo(stVehiculo *aux)
 {
     printf("Ingrese la marca: ");
@@ -176,7 +178,7 @@ void cargarVehiculo(stVehiculo *aux)
     aux->disponible = 0;
 }
 
-//Contar los vehiculos que hay en el archivo
+//CONTAR LOS VEHICULOS QUE HAY EN EL ARCHIVO
 int contarVehiculosEnArchivo(char nombreArchivo[])
 {
     stVehiculo aux;
@@ -201,7 +203,7 @@ int contarVehiculosEnArchivo(char nombreArchivo[])
     return contador;
 }
 
-// Genera un ID que se incrementa buscando el ultimo en el archivo
+// GENERA UN ID QUE SE INCREMENTA BUSCANDO EL ULTIMO EN EL ARCHIVO
 int obtenerNuevoId(char nombreArchivo[])
 {
     int maxId = 0;
@@ -226,7 +228,7 @@ int obtenerNuevoId(char nombreArchivo[])
     return maxId;
 }
 
-// Baja logica
+// BAJA LOGICA
 void bajaVehiculo(char nombreArchivo[])
 {
     int idBuscado, encontrado = 0;
@@ -234,15 +236,15 @@ void bajaVehiculo(char nombreArchivo[])
 
     mostrarVehiculos(nombreArchivo);
 
-    printf("Ingrese el ID del vehiculo a dar de baja: ");
-    scanf("%d", &idBuscado);
-
     FILE *archi = NULL;
 
     archi = fopen(nombreArchivo, "r+b");
 
     if(archi != NULL)
     {
+        printf("Ingrese el ID del vehiculo a dar de baja: ");
+        scanf("%d", &idBuscado);
+
         while(fread(&aux, sizeof(stVehiculo), 1, archi) > 0 && encontrado == 0)
         {
             if(aux.id == idBuscado && aux.eliminado == 0)
@@ -263,10 +265,6 @@ void bajaVehiculo(char nombreArchivo[])
         if(encontrado == 0)
             printf("No se encontro ningun vehiculo activo con ID %d.\n", idBuscado);
     }
-    else
-    {
-        printf("Error: no se pudo abrir el archivo.\n");
-    }
 }
 
 // MODIFICAR VEHICULO
@@ -278,13 +276,13 @@ void modificarVehiculo(char nombreArchivo[])
 
     mostrarVehiculos(nombreArchivo);
 
-    printf("\nIngrese el ID del vehiculo a modificar: ");
-    scanf("%d", &idBuscado);
-
     FILE *archi = fopen(nombreArchivo, "r+b");
 
     if(archi != NULL)
     {
+        printf("\nIngrese el ID del vehiculo a modificar: ");
+        scanf("%d", &idBuscado);
+
         while(fread(&aux, sizeof(stVehiculo), 1, archi) > 0 && encontrado == 0)
         {
             if(aux.id == idBuscado && aux.eliminado == 0)
@@ -310,13 +308,9 @@ void modificarVehiculo(char nombreArchivo[])
         if(encontrado == 0)
             printf("No se encontro ningun vehiculo activo con ID %d.\n", idBuscado);
     }
-    else
-    {
-        printf("Error: no se pudo abrir el archivo.\n");
-    }
 }
 
-//----------------------------Mostrar Vehiculos-----------------------------------
+//MOSTRAR VEHICULOS
 void mostrarVehiculos(char nombreArchivo[])
 {
     int contador = 0;
@@ -367,6 +361,236 @@ void mostrarVehiculosRecursivamente(FILE *archi, int contador)
     }
 }
 
+//BUSCAR Y MOSTRAR VEHICULO
+void buscarYMostrarVehiculo(char nombreArchivo[])
+{
+    stVehiculo aux;
+    char patenteBuscada[DIM_PATENTE];
+    int encontrado = 0;
+
+    FILE *archi = NULL;
+
+    archi = fopen(nombreArchivo, "rb");
+
+    if(archi != NULL)
+    {
+        printf("Ingrese la patente a buscar: ");
+        getchar();
+        fgets(patenteBuscada, DIM_PATENTE, stdin);
+        limpiarSaltoLinea(patenteBuscada);
+
+        while(fread(&aux, sizeof(stVehiculo), 1, archi) > 0 && encontrado == 0)
+        {
+            if(strcmp(aux.patente, patenteBuscada) == 0 && aux.eliminado == 0)
+            {
+                encontrado = 1;
+
+                mostrarUnVehiculo(aux);
+            }
+        }
+        fclose(archi);
+
+        if(encontrado == 0)
+        {
+            printf("\nNo se encontro ningun vehiculo activo con la patente: %s\n", patenteBuscada);
+        }
+    }
+    else
+    {
+        printf("Error: no se pudo abrir el archivo.\n");
+    }
+}
+
+void mostrarUnVehiculo(stVehiculo aux)
+{
+    printf("\n--- VEHICULO ENCONTRADO ---\n");
+    printf("ID:            %d\n",     aux.id);
+    printf("Patente:       %s\n",     aux.patente);
+    printf("Marca:         %s\n",     aux.marca);
+    printf("Modelo:        %s\n",     aux.modelo);
+    printf("Kilometraje:   %d km\n",  aux.kilometraje);
+    printf("Precio/dia:    $%.2f\n",  aux.precioPorDia);
+
+    if(aux.disponible == 0)
+    {
+        printf("DISPONIBLE\n");
+    }
+    else if(aux.disponible == 1)
+    {
+        printf("NO DISPONIBLE\n");
+    }
+}
+
+//MENU DE LISTAR
+void menuOrdenacionVehiculos(char nombreArchivo[])
+{
+    int opcion;
+
+    stVehiculo arregloOrdenSeleccion[DIM_VEHICULOS];
+    stVehiculo arregloOrdenInsercion[DIM_VEHICULOS];
+
+    int validosSeleccion = copiarArchiAArreglo(nombreArchivo, arregloOrdenSeleccion, DIM_VEHICULOS);
+
+    int validosInsercion = copiarArchiAArreglo(nombreArchivo, arregloOrdenInsercion, DIM_VEHICULOS);
+
+    if(validosSeleccion > 0 && validosInsercion > 0)
+    {
+        do
+        {
+            printf("\n--- MENU DE ORDENACION Y LISTADOS ---\n");
+            printf("1. Listar por marca (Orden alfabetico - Seleccion)\n");
+            printf("2. Listar por precio por dia (Menor a mayor - Insercion)\n");
+            printf("0. Volver al menu anterior\n");
+
+            printf("Ingrese una opcion: ");
+            scanf("%d", &opcion);
+
+            switch(opcion)
+            {
+            case 1:
+                ordenarArregloSeleccion(arregloOrdenSeleccion, validosSeleccion);
+                mostrarArregloVehiculos(arregloOrdenSeleccion, validosSeleccion);
+                break;
+            case 2:
+                ordenarArregloInsercion(arregloOrdenInsercion, validosInsercion);
+                mostrarArregloVehiculos(arregloOrdenInsercion, validosInsercion);
+                break;
+            case 0:
+                break;
+            default:
+                printf("\nOpcion incorrecta\n.");
+                break;
+            }
+            system("pause");
+            system("cls");
+        }
+        while(opcion != 0);
+    }
+    else
+    {
+        printf("\nNo hay vehiculos registrados activos en el sistema para ordenar.\n");
+    }
+}
+
+//COPIAR ARCHIVO A ARREGLOS
+int copiarArchiAArreglo(char nombreArchivo[], stVehiculo arreglo[], int dimension)
+{
+    stVehiculo aux;
+
+    FILE *archi = NULL;
+
+    archi = fopen(nombreArchivo, "rb");
+
+    int validos = 0;
+
+    if(archi != NULL)
+    {
+        while(fread(&aux, sizeof(stVehiculo), 1, archi) > 0 && validos < dimension)
+        {
+            if(aux.eliminado == 0)
+            {
+                arreglo[validos] = aux;
+
+                validos++;
+            }
+        }
+        fclose(archi);
+    }
+
+    return validos;
+}
+
+//ORDENAR POR SELECCION
+int buscarMenor(stVehiculo arregloSeleccion[], int i, int validos)
+{
+    int posMenor = i;
+
+    for(int x = i + 1; x < validos; x++)
+    {
+        if(strcmp(arregloSeleccion[posMenor].marca, arregloSeleccion[x].marca) > 0)
+        {
+            posMenor = x;
+        }
+    }
+
+    return posMenor;
+}
+
+void ordenarArregloSeleccion(stVehiculo arregloSeleccion[], int validos)
+{
+    stVehiculo aux;
+    int posMenor;
+
+    for(int i = 0; i < validos - 1; i++)
+    {
+        posMenor = buscarMenor(arregloSeleccion, i, validos);
+
+        aux = arregloSeleccion[posMenor];
+
+        arregloSeleccion[posMenor] = arregloSeleccion[i];
+
+        arregloSeleccion[i] = aux;
+    }
+}
+
+//ORDENAR POR INSERCION
+void insertar(stVehiculo arregloInsercion[], int posInicial, stVehiculo dato)
+{
+    int i = posInicial;
+
+    while(i >= 0 && dato.precioPorDia < arregloInsercion[i].precioPorDia)
+    {
+        arregloInsercion[i + 1] = arregloInsercion[i];
+
+        i--;
+    }
+
+    arregloInsercion[i + 1] = dato;
+}
+
+void ordenarArregloInsercion(stVehiculo arregloInsercion[], int validos)
+{
+    int i = 0;
+
+    while(i < validos - 1)
+    {
+        insertar(arregloInsercion, i, arregloInsercion[i + 1]);
+
+        i++;
+    }
+}
+
+//MOSTRAR ARREGLO
+void mostrarArregloVehiculos(stVehiculo arreglo[], int validos)
+{
+    if(validos == 0)
+    {
+        printf("\nNo hay vehiculos para listar.\n");
+    }
+    else
+    {
+        for(int i = 0; i < validos; i++)
+        {
+            printf("\n\n--- Vehiculo #%d ---\n\n", i + 1);
+            printf("ID:            %d\n",     arreglo[i].id);
+            printf("Patente:       %s\n",     arreglo[i].patente);
+            printf("Marca:         %s\n",     arreglo[i].marca);
+            printf("Modelo:        %s\n",     arreglo[i].modelo);
+            printf("Kilometraje:   %d km\n",  arreglo[i].kilometraje);
+            printf("Precio/dia:    $%.2f\n",  arreglo[i].precioPorDia);
+
+            if(arreglo[i].disponible == 0)
+            {
+                printf("DISPONIBLE\n");
+            }
+            else if(arreglo[i].disponible == 1)
+            {
+                printf("NO DISPONIBLE\n");
+            }
+        }
+        printf("\n");
+    }
+}
 
 // Elimina el caracter de salto de linea '\n' que introduce fgets al presionar Enter
 void limpiarSaltoLinea(char cadena[])

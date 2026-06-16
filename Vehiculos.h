@@ -7,7 +7,7 @@
 
 #define DIM_PATENTE 8
 #define DIM_STRINGS 20
-#define DIM_VEHICULOS 4
+#define DIM_VEHICULOS 3
 
 typedef struct
 {
@@ -40,6 +40,27 @@ void modificarVehiculo(char nombreArchivo[]);
 //FUNCIONES PARA MOSTRAR VEHICULOS
 void mostrarVehiculos(char nombreArchivo[]);
 void mostrarVehiculosRecursivamente(FILE *archi, int contador);
+
+//FUNCIONES PARA BUSCAR Y MOSTRAR VEHICULO
+void buscarYMostrarVehiculo(char nombreArchivo[]);
+void mostrarUnVehiculo(stVehiculo aux);
+
+//FUNCION MENU LISTAR
+void menuOrdenacionVehiculos(char nombreArchivo[]);
+
+//FUNCION PARA COPIAR ARCHIVO AL ARREGLO
+int copiarArchiAArreglo(char nombreArchivo[], stVehiculo arreglo[], int dimension);
+
+//FUNCION PARA ORDENAR UN ARREGLO POR SELECCION
+int buscarMenor(stVehiculo arregloSeleccion[], int i, int validos);
+void ordenarArregloSeleccion(stVehiculo arregloSeleccion[], int validos);
+
+//FUNCION PARA ORDENAR UN ARREGLO POR INSERCION
+void insertar(stVehiculo arregloInsercion[], int posInicial, stVehiculo dato);
+void ordenarArregloInsercion(stVehiculo arregloInsercion[], int validos);
+
+//FUNCION PARA MOSTRAR UN ARREGLO
+void mostrarArregloVehiculos(stVehiculo arreglo[], int validos);
 
 //FUNCIONES EXTRAS
 void limpiarSaltoLinea(char cadena[]);
