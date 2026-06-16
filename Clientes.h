@@ -20,12 +20,12 @@ typedef struct
 
 // Prototipos
 stCliente cargarDatosDelCliente();
-void altaCliente(char nombreArchivo[]);
+int altaCliente(char nombreArchivo[]);
 void MostrarClientes(char nombreArchivo[]);
 void menuClientes(char nombreArchivo[]);
 void DarDeBajaUnCliente(char nombreArchivo[], char dniBuscado[]);
 void modificarTelefonoCliente(char nombreArchivo[], char dniBuscado[], char nuevoTelefono[]);
 void consultarCliente(char nombreArchivo[], char dniBuscado[]);
-void listarClientesAlfabetico(char nombreArchivo[]);
+int PasarClientesAunArreglo(char nombreArchivo[], stCliente **arreglo);
 
 #endif // CLIENTES_H_INCLUDED

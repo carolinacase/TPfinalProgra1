@@ -3,10 +3,12 @@
 void menuClientes(char nombreArchivo[])
 {
     int opcion;
+    int validos;
     char dniBuscado[DIM_DNI];
     char dniModificar[DIM_DNI];
     char nuevoTel[DIM_DNI];
     char dniEncontrado[DIM_DNI];
+    int cantidad = 0;
 
     do
     {
@@ -23,7 +25,7 @@ void menuClientes(char nombreArchivo[])
         switch(opcion)
         {
         case 1:
-            altaCliente(nombreArchivo);
+            validos = altaCliente(nombreArchivo);
             break;
         case 2:
             MostrarClientes(nombreArchivo);
@@ -48,11 +50,20 @@ void menuClientes(char nombreArchivo[])
             printf("Ingrese el DNI del cliente para buscar:\n");
             fflush(stdin);
             scanf("%s", dniEncontrado);
-            consultarCliente(nombreArchivo, dniBuscado);
+            consultarCliente(nombreArchivo, dniEncontrado);
             break;
         case 6:
-            listarClientesAlfabetico(nombreArchivo);
-            break;
+        {
+            stCliente *arreglo = NULL; //puntero inicializado para utilizar en Realloc
+            cantidad = PasarClientesAunArreglo(nombreArchivo,&arreglo);
+            if(cantidad > 0)
+            {
+                OrdenarClientesPorSeleccion(arreglo, cantidad);
+                mostrarArrDeClientes(arreglo, cantidad);
+                free(arreglo);
+            }
+        }
+        break;
 
 
         case 0:
@@ -105,24 +116,26 @@ stCliente cargarDatosDelCliente()
 ////○ Verificar de no cargar repetidos
 
 
-void altaCliente(char nombreArchivo[]) //Falta verificacion de carga repetida
+int altaCliente(char nombreArchivo[]) //Falta verificacion de carga repetida
 {
     stCliente nuevo = cargarDatosDelCliente();////● Carga de Datos
+    int cantidad = 0;
 
     FILE *archi = fopen(nombreArchivo, "ab");
 
     if(archi != NULL)
     {
-        fwrite(&nuevo, sizeof(stCliente), 1, archi); //Escribe en el archivo
-        fclose(archi);
-        printf("Cliente dado de alta correctamente.\n");////○ Alta
+        fwrite(&nuevo, sizeof(stCliente), 1, archi);//Escribe en el archivo
+
+        printf("Cliente dado de alta correctamente.\n");////○ Aviso de Alta
+        cantidad++;
     }
     else
     {
         printf("Error: no se pudo abrir el archivo.\n");
     }
-
-    close(archi);////● Guardar en Archivo
+    fclose(archi);
+    return cantidad;
 }
 //-------------------------MOSTRAR CLIENTES-------------------------
 void mostrarUnCliente(stCliente unCliente)
@@ -272,23 +285,21 @@ void consultarCliente(char nombreArchivo[], char dniBuscado[])
 
 //○------------------------------ Listados --------------------------------
 //● Listar todos los datos por orden alfabético por el método de selección
-//(campo a elegir de acuerdo a las structs elegidas)
-
-void PasarClientesAunArreglo(char nombreArchivo[])
+//(campo a elegir de acuerdo a las structs elegidas)int PasarClientesAunArreglo(char nombreArchivo[], stCliente **arreglo)
+int PasarClientesAunArreglo(char nombreArchivo[], stCliente **arreglo)
 {
-    stCliente arreglo[MAX_CLIENTES];
     int cantidad = 0;
     stCliente aux;
 
-    // Cargar clientes activos en el arreglo
     FILE *archi = fopen(nombreArchivo, "rb");
     if(archi != NULL)
     {
-        while(fread(&aux, sizeof(stCliente), 1, archi) > 0 && cantidad < MAX_CLIENTES)
+        while(fread(&aux, sizeof(stCliente), 1, archi) > 0)
         {
             if(aux.activo == 1)
             {
-                arreglo[cantidad] = aux;
+                *arreglo = realloc(*arreglo, (cantidad + 1) * sizeof(stCliente));
+                (*arreglo)[cantidad] = aux;
                 cantidad++;
             }
         }
@@ -297,24 +308,18 @@ void PasarClientesAunArreglo(char nombreArchivo[])
     else
     {
         printf("Error: no se pudo abrir el archivo.\n");
-        return;
     }
-
-    if(cantidad == 0)
-    {
-        printf("No hay clientes registrados.\n");
-        return;
-    }
-
-
-
+    return cantidad;
 }
+// Ordenar por apellido - metodo seleccion
 
-    // Ordenar por apellido - metodo seleccion
-int OrdenarClientesPorSeleccion(int cantidad)
+void OrdenarClientesPorSeleccion(stCliente arreglo[], int cantidad)
 {
-    int i, j, minPos;
+    int i;
+    int j;
+    int minPos;
     stCliente temp;
+
     for(i = 0; i < cantidad - 1; i++)
     {
         minPos = i;
@@ -330,15 +335,16 @@ int OrdenarClientesPorSeleccion(int cantidad)
             arreglo[minPos] = temp;
         }
     }
-
 }
 
-void mostrarArrDeClientes()
+void mostrarArrDeClientes(stCliente arreglo[], int cantidad)
 {
     printf("\n--- CLIENTES ORDENADOS ALFABETICAMENTE ---\n");
+    int i;
     for(i = 0; i < cantidad; i++)
         mostrarUnCliente(arreglo[i]);
 }
+
 //● Listar todos los datos por orden numérico por el método de inserción
 //(campo a elegir de acuerdo a las structs elegidas)
 //● Como opcional, y de forma adicional a lo anterior, pueden listar sólo los que
