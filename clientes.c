@@ -18,6 +18,7 @@ void menuClientes(char nombreArchivo[])
         printf("3. Dar de baja un cliente\n");
         printf("4. Modificar Contacto\n");
         printf("5. Buscar Cliente por DNI\n");
+        printf("6. Ordenar Alfabeticamente (Con Seleccion)\n");
         printf("0. Volver al menu principal\n");
         printf("Ingrese una opcion:\n");
         scanf("%d", &opcion);

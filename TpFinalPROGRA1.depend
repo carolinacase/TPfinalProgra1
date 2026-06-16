@@ -17,44 +17,42 @@
 	<stdlib.h>
 	<string.h>
 
-<<<<<<< HEAD
-1781612712 source:c:\users\caro\documents\github\tpfinalprogra1\main.c
+1781455904 D
+
+1781617054 source:c:\users\caro\documents\github\tpfinalprogra1\main.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
 	"Clientes.h"
+	"Vehiculos.h"
 
 1781615572 c:\users\caro\documents\github\tpfinalprogra1\clientes.h
-=======
+
 1781455913 source:c:\users\melina\onedrive\documentos\github\tpfinalprogra1\main.c
 	<stdio.h>
 	<stdlib.h>
 	"Vehiculos.h"
 
 1781455904 c:\users\melina\onedrive\documentos\github\tpfinalprogra1\vehiculos.h
->>>>>>> main
+
+1781612269 n
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
 
-<<<<<<< HEAD
-1781397884 source:c:\users\caro\documents\github\tpfinalprogra1\clientes.c
+1781616956 source:c:\users\caro\documents\github\tpfinalprogra1\clientes.c
 	"Clientes.h"
-=======
+
+1781397884 h"
+
 1781456000 source:c:\users\melina\onedrive\documentos\github\tpfinalprogra1\vehiculos.c
 	"Vehiculos.h"
 
-1781612269 source:c:\users\caro\documents\github\tpfinalprogra1\main.c
-	<stdio.h>
-	<stdlib.h>
-	"Vehiculos.h"
-
-1781612269 c:\users\caro\documents\github\tpfinalprogra1\vehiculos.h
+1781616673 c:\users\caro\documents\github\tpfinalprogra1\vehiculos.h
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
 
-1781612269 source:c:\users\caro\documents\github\tpfinalprogra1\vehiculos.c
+1781616673 source:c:\users\caro\documents\github\tpfinalprogra1\vehiculos.c
 	"Vehiculos.h"
->>>>>>> main
 
