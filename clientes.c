@@ -273,11 +273,6 @@ void consultarCliente(char nombreArchivo[], char dniBuscado[])
 //○------------------------------ Listados --------------------------------
 //● Listar todos los datos por orden alfabético por el método de selección
 //(campo a elegir de acuerdo a las structs elegidas)
-//● Listar todos los datos por orden numérico por el método de inserción
-//(campo a elegir de acuerdo a las structs elegidas)
-//● Como opcional, y de forma adicional a lo anterior, pueden listar sólo los que
-//cumplan cierto criterio (listados con filtro - por ejemplo: todos los productos de
-//cierta categoría, todos los alumnos con nota del 6 al 8, etc)
 
 void PasarClientesAunArreglo(char nombreArchivo[])
 {
@@ -314,9 +309,10 @@ void PasarClientesAunArreglo(char nombreArchivo[])
 
 
 }
-int OrdenarClientesPorSeleccion()
-{
+
     // Ordenar por apellido - metodo seleccion
+int OrdenarClientesPorSeleccion(int cantidad)
+{
     int i, j, minPos;
     stCliente temp;
     for(i = 0; i < cantidad - 1; i++)
@@ -343,3 +339,8 @@ void mostrarArrDeClientes()
     for(i = 0; i < cantidad; i++)
         mostrarUnCliente(arreglo[i]);
 }
+//● Listar todos los datos por orden numérico por el método de inserción
+//(campo a elegir de acuerdo a las structs elegidas)
+//● Como opcional, y de forma adicional a lo anterior, pueden listar sólo los que
+//cumplan cierto criterio (listados con filtro - por ejemplo: todos los productos de
+//cierta categoría, todos los alumnos con nota del 6 al 8, etc)
