@@ -14,14 +14,12 @@ int main()
 
     do
     {
-        printf("\n---------------SISTEMA DE ALQUILER DE VEHICULOS------------------------\n");
+        printf("\n------SISTEMA DE ALQUILER DE VEHICULOS----\n");
         printf("1. Gestion de vehiculos\n");
         printf("2. Gestion de clientes\n");
-        printf("3. Realizar alquiler\n");
-        printf("4. Devolver vehiculo\n");
-        printf("5. Listados\n");
+        printf("3. Gestion de Rentas y Devoluciones\n");
         printf("0. Salir\n");
-        printf("----------------------------------------\n");
+        printf("--------------------------------------------\n");
         printf("Ingrese una opcion: ");
         scanf("%d", &opcion);
 
@@ -33,10 +31,6 @@ int main()
         case 2:
             break;
         case 3:
-            break;
-        case 4:
-            break;
-        case 5:
             break;
         case 0:
             printf("\n¡Saludos!\n");
