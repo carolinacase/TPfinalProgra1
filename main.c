@@ -32,7 +32,7 @@ int main()
         case 3:
             break;
         case 0:
-            printf("\n¡Saludos!\n");
+            printf("\nAdios!\n");
             break;
         default:
             printf("\nOpcion invalida. Intente de nuevo.\n");
