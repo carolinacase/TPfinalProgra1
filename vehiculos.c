@@ -337,6 +337,16 @@ void mostrarVehiculosRecursivamente(FILE *archi, int contador)
 
     if(fread(&aux, sizeof(stVehiculo), 1, archi) > 0)
     {
+        if(aux.eliminado == 1)
+        {
+            contador = contador - 1;
+        }
+
+        if(contador <= 0)
+        {
+            contador = 1;
+        }
+
         if(aux.eliminado == 0)
         {
             printf("\n\n--- Vehiculo #%d ---\n\n", contador);
@@ -356,7 +366,6 @@ void mostrarVehiculosRecursivamente(FILE *archi, int contador)
                 printf("NO DISPONIBLE\n");
             }
         }
-
         mostrarVehiculosRecursivamente(archi, contador + 1);
     }
 }
