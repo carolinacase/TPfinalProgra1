@@ -31,6 +31,21 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
+<<<<<<< HEAD
+		<Unit filename="AlquilerDeVehiculo.h" />
+		<Unit filename="Clientes.h" />
+		<Unit filename="TpFinalPROGRA1.cbp" />
+		<Unit filename="TpFinalPROGRA1.depend" />
+		<Unit filename="TpFinalPROGRA1.layout" />
+		<Unit filename="Vehiculos.h" />
+		<Unit filename="clientes.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="main.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="vehiculos.bin" />
+=======
 		<Unit filename="Vehiculos.h" />
 		<Unit filename="main.c">
 			<Option compilerVar="CC" />
@@ -38,6 +53,7 @@
 		<Unit filename="vehiculos.c">
 			<Option compilerVar="CC" />
 		</Unit>
+>>>>>>> main
 		<Extensions>
 			<lib_finder disable_auto="1" />
 		</Extensions>
