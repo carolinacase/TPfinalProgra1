@@ -1,8 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "Clientes.h"
+
 #include "Vehiculos.h"
+#include "Clientes.h"
 #include "alquileres.h"
 
 int main()
