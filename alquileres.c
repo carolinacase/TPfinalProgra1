@@ -1,6 +1,6 @@
 #include "Alquileres.h"
 
-void menuAlquileres(char archivoAlquileres[])
+void menuAlquileres(char archivoAlquileres[], char archivoVehiculos[], char archivoClientes[])
 {
     int opcion;
 
@@ -50,7 +50,11 @@ void menuAlquileres(char archivoAlquileres[])
 
 }
 
+//FUNCIONES PARA CARGAR UN ALQUILER
+void cargarAlquiler(char archivoAlquileres[], char archivoVehiculos[], char archivoClientes[])
+{
 
+}
 
 
 
