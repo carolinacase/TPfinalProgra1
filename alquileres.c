@@ -1,0 +1,340 @@
+#include "alquileres.h"
+
+void menuAlquileres(char archivoAlquileres[], char archivoVehiculos[], char archivoClientes[])
+{
+    int opcion;
+
+    do
+    {
+        printf("\n--- MENU ALQUILER ---\n");
+        printf("1. Registrar un Alquiler\n");
+        printf("2. Cancelar/Finalizar Alquiler\n");
+        printf("3. Modificar Alquiler\n");
+        printf("4. Buscar Alquiler\n");
+        printf("5. Ordenar alquileres\n");
+        printf("6. Mostrar alquileres\n");
+        printf("0. Volver al menu principal\n");
+
+        printf("\nIngrese una opcion: ");
+        scanf("%d", &opcion);
+
+        switch(opcion)
+        {
+        case 1:
+            altaAlquiler(archivoAlquileres, archivoVehiculos, archivoClientes);
+            break;
+        case 2:
+            bajaAlquiler(archivoAlquileres);
+            break;
+        case 3:
+            // modificarAlquiler(...)
+            break;
+        case 4:
+            // buscarAlquiler(...)
+            break;
+        case 5:
+            // menuOrdenacionAlquileres(...)
+            break;
+        case 6:
+            mostrarAlquileres(archivoAlquileres);
+            break;
+        case 0:
+            break;
+        default:
+            printf("Opcion invalida.\n");
+            break;
+        }
+        system("pause");
+        system("cls");
+    }
+    while(opcion != 0);
+
+}
+
+//FUNCIONES PARA CARGAR UN ALQUILER
+void altaAlquiler(char archivoAlquileres[], char archivoVehiculos[], char archivoClientes[])
+{
+    stAlquiler aux;
+    int dias = 0;
+
+    printf("\n--- REGISTRAR NUEVO ALQUILER ---\n");
+    printf("(Ingrese '0' en cualquier momento para cancelar la operacion)\n\n");
+
+    if(solicitarYValidarCliente(archivoClientes, aux.dniCliente) == 0)
+    {
+        printf("\nOperacion cancelada, volviendo al menu\n");
+    }
+    else if(solicitarYValidarVehiculo(archivoVehiculos, aux.patente) == 0)
+    {
+        printf("\nOperacion cancelada, volviendo al menu\n");
+    }
+    else
+    {
+        aux.id = obtenerNuevoIdAlquiler(archivoAlquileres);
+
+        //aux.fechaFin = calcularFechaFin(aux.fechaInicio, dias);
+
+        cargarAlquiler(&aux, &dias);
+
+        float precioPorDia = obtenerPrecioPorDia(archivoVehiculos, aux.patente);
+        aux.costoTotal = (float)dias * precioPorDia;
+
+
+        FILE *archi = NULL;
+        archi = fopen(archivoAlquileres, "ab");
+
+        if(archi != NULL)
+        {
+            fwrite(&aux, sizeof(stAlquiler), 1, archi);
+            fclose(archi);
+
+            printf("\n==============================================\n");
+            printf(" ¡ALQUILER REGISTRADO CON EXITO!\n");
+            //printf("Fin de alquiler: %d/%d/%d", aux.fechaFin.dia, aux.fechaFin.mes, aux.fechaFin.anio);
+            printf(" ID Alquiler: %d\n", aux.id);
+            printf(" Costo Total a pagar: $%.2f\n", aux.costoTotal);
+            printf("==============================================\n");
+        }
+    }
+}
+
+int obtenerNuevoIdAlquiler(char nombreArchivo[])
+{
+    int maxId = 0;
+    stAlquiler aux;
+
+    FILE *archi = NULL;
+
+    archi = fopen(nombreArchivo, "rb");
+
+    if(archi != NULL)
+    {
+        while(fread(&aux, sizeof(stAlquiler), 1, archi) > 0)
+        {
+            if(aux.id > maxId)
+            {
+                maxId = aux.id;
+            }
+        }
+        fclose(archi);
+    }
+
+    return maxId + 1;
+}
+
+void cargarAlquiler(stAlquiler *aux, int *diasAlquilados)
+{
+    printf("Ingrese el dia de inicio: ");
+    scanf("%d", &aux->fechaInicio.dia);
+
+    printf("Ingrese el mes de inicio: ");
+    scanf("%d", &aux->fechaInicio.mes);
+
+    printf("Ingrese el anio de inicio: ");
+    scanf("%d", &aux->fechaInicio.anio);
+
+    printf("¿Por cuantos dias se alquila el vehiculo?: ");
+    scanf("%d", diasAlquilados);
+
+    aux->eliminado = 0;
+}
+
+float obtenerPrecioPorDia(char nombreArchivo[], char patenteBuscada[])
+{
+    stVehiculo aux;
+
+    int encontrado = 0;
+
+    float precio;
+
+    FILE *archi = NULL;
+
+    archi = fopen(nombreArchivo, "rb");
+
+    if(archi != NULL)
+    {
+
+        while(fread(&aux, sizeof(stVehiculo), 1, archi) > 0 && encontrado == 0)
+        {
+            if(strcmp(aux.patente, patenteBuscada) == 0 && aux.eliminado == 0)
+            {
+                encontrado = 1;
+
+                precio = aux.precioPorDia;
+            }
+        }
+        fclose(archi);
+
+        if(encontrado == 0)
+        {
+            printf("\nNo se encontro ningun vehiculo activo con la patente: %s\n", patenteBuscada);
+        }
+    }
+    else
+    {
+        printf("Error: no se pudo abrir el archivo.\n");
+    }
+
+    return precio;
+}
+
+int solicitarYValidarCliente(char archivoClientes[], char destinoDni[])
+{
+    int existeCliente = 0;
+
+    do
+    {
+        printf("Ingrese el DNI del cliente: ");
+        fflush(stdin);
+        fgets(destinoDni, DIM_DNI, stdin);
+        limpiarSaltoLinea(destinoDni);
+
+        if(strcmp(destinoDni, "0") == 0)
+        {
+            return 0;
+        }
+        else
+        {
+            existeCliente = ValidarClienteExistente(archivoClientes, destinoDni);
+
+            if(existeCliente == 0)
+            {
+                printf("ERROR: El DNI '%s' no esta registrado. Intente nuevamente.\n\n", destinoDni);
+            }
+        }
+    }
+    while(existeCliente == 0);
+
+    return 1;
+}
+
+int solicitarYValidarVehiculo(char archivoVehiculos[], char destinoPatente[])
+{
+    int existeVehiculo = 0;
+
+    do
+    {
+        printf("Ingrese la patente del vehiculo: ");
+        fflush(stdin);
+        fgets(destinoPatente, DIM_PATENTE, stdin);
+        limpiarSaltoLinea(destinoPatente);
+
+        if(strcmp(destinoPatente, "0") == 0)
+        {
+            return 0;
+        }
+        else
+        {
+            existeVehiculo = validarPatenteEnArchivo(archivoVehiculos, destinoPatente);
+
+            if(existeVehiculo == 0)
+            {
+                printf("ERROR: La patente '%s' no existe en el sistema. Intente nuevamente.\n\n", destinoPatente);
+            }
+        }
+    }
+    while(existeVehiculo == 0);
+
+    return 1;
+}
+
+//stFecha calcularFechaFin(stFecha inicio, int diasAlquilados)
+//{
+//    stFecha fin = inicio;
+//
+//    fin.dia = fin.dia + diasAlquilados;
+//
+//    while (fin.dia > 30)
+//    {
+//        fin.dia = fin.dia - 30;
+//        fin.mes = fin.mes + 1;
+//    }
+//
+//    while (fin.mes > 12)
+//    {
+//        fin.mes = fin.mes - 12;
+//        fin.anio = fin.anio + 1;
+//    }
+//
+//    return fin;
+//}
+
+void bajaAlquiler(char nombreArchivo[])
+{
+    int encontrado = 0;
+
+    char dniBuscado[DIM_DNI];
+
+    stAlquiler aux;
+
+    //HACER FUNCION PARA MOSTRAR ALQUILERES: mostrarAlquileres(nombreArchivo);
+
+    FILE *archi = NULL;
+
+    archi = fopen(nombreArchivo, "r+b");
+
+    if(archi != NULL)
+    {
+        printf("Ingrese el DNI del cliente: ");
+        fflush(stdin);
+        fgets(dniBuscado, DIM_DNI, stdin);
+        limpiarSaltoLinea(dniBuscado);
+
+        while(fread(&aux, sizeof(stAlquiler), 1, archi) > 0 && encontrado == 0)
+        {
+            if(strcmp(aux.dniCliente, dniBuscado) == 0  && aux.eliminado == 0)
+            {
+                encontrado = 1;
+
+                aux.eliminado = 1; // marca como eliminado
+
+                fseek(archi, sizeof(stAlquiler) * (-1), SEEK_CUR);
+                fwrite(&aux, sizeof(stAlquiler), 1, archi);
+                fseek(archi, 0, SEEK_CUR);
+
+                printf("Alquiler del cliente %s dado de baja correctamente.\n", dniBuscado);
+            }
+        }
+        fclose(archi);
+
+        if(encontrado == 0)
+            printf("No se encontro ningun alquiler activo con DNI %s.\n", dniBuscado);
+    }
+}
+
+void mostrarAlquileres(char nombreArchivo[])
+{
+    FILE *archi = NULL;
+
+    archi = fopen(nombreArchivo, "rb");
+
+    if(archi != NULL)
+    {
+        mostrarAlquileresRecursivamente(archi);
+
+        fclose(archi);
+    }
+    else
+    {
+        printf("\nERROR: No hay vehiculos cargados\n");
+    }
+}
+
+void mostrarAlquileresRecursivamente(FILE *archi)
+{
+    stAlquiler aux;
+
+    if(fread(&aux, sizeof(stAlquiler), 1, archi) > 0)
+    {
+        if(aux.eliminado == 0)
+        {
+            printf("\n\n--- Alquiler ---\n\n");
+            printf("ID:                  %d\n", aux.id);
+            printf("DNI:                 %s\n",     aux.dniCliente);
+            printf("Patente:             %s\n",     aux.patente);
+            printf("Inicio de alquiler:  %d/%d/%d\n", aux.fechaInicio.dia, aux.fechaInicio.mes, aux.fechaInicio.anio);
+            printf("Costo total:         %.2f\n",     aux.costoTotal);
+        }
+        mostrarAlquileresRecursivamente(archi);
+    }
+}
