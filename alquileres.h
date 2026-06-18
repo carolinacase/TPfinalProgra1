@@ -26,11 +26,12 @@ typedef struct
 } stAlquiler;
 
 //FUNCION MENU
-void menuAlquileres(char archivoAlquileres[]);
+void menuAlquileres(char archivoAlquileres[], char archivoVehiculos[], char archivoClientes[]);
 
 //FUNCIONES PARA CARGAR UN ALQUILER
-
-
+int obtenerNuevoIdAlquiler(char nombreArchivo[]);
+void cargarAlquiler(stAlquiler *aux, int *diasAlquilados);
+float obtenerPrecioPorDia(char nombreArchivo[], char patenteBuscada[]);
 
 
 

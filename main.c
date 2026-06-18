@@ -35,7 +35,7 @@ int main()
             menuClientes(archivoClientes);
             break;
         case 3:
-            menuAlquileres(archivoAlquileres);
+            menuAlquileres(archivoAlquileres, archivoVehiculos, archivoClientes);
             break;
         case 0:
             printf("\nAdios!\n");
