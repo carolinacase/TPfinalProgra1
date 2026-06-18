@@ -1,4 +1,4 @@
-#include "Alquileres.h"
+#include "alquileres.h"
 
 void menuAlquileres(char archivoAlquileres[], char archivoVehiculos[], char archivoClientes[])
 {
