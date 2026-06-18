@@ -9,6 +9,7 @@ void menuClientes(char nombreArchivo[])
     char nuevoTel[DIM_DNI];
     char dniEncontrado[DIM_DNI];
     int cantidad = 0;
+    stCliente *arreglo = NULL; //puntero inicializado para utilizar en Realloc
 
     do
     {
@@ -55,14 +56,26 @@ void menuClientes(char nombreArchivo[])
             break;
         case 6:
         {
-            stCliente *arreglo = NULL; //puntero inicializado para utilizar en Realloc
-            cantidad = PasarClientesAunArreglo(nombreArchivo,&arreglo);
+            int opcionOrden;
+            printf("\n--- ORDENAR CLIENTES ---\n");
+            printf("1. Ordenar alfabeticamente por apellido (seleccion)\n");
+            printf("2. Ordenar por numero de DNI (insercion)\n");
+            printf("Ingrese una opcion: ");
+            scanf("%d", &opcionOrden);
+            cantidad = PasarClientesAunArreglo(nombreArchivo, &arreglo);
+
             if(cantidad > 0)
             {
-                OrdenarClientesPorSeleccion(arreglo, cantidad);
+                if(opcionOrden == 1)
+                    OrdenarClientesPorSeleccion(arreglo, cantidad);
+                else if(opcionOrden == 2)
+                    ordenarArregloPorInsercion(arreglo, cantidad);
+
                 mostrarArrDeClientes(arreglo, cantidad);
                 free(arreglo);
             }
+            else
+                printf("No hay clientes registrados.\n");
         }
         break;
 
@@ -114,30 +127,61 @@ stCliente cargarDatosDelCliente()
     return cliente;
 }
 
-////○ Verificar de no cargar repetidos
-
-
-int altaCliente(char nombreArchivo[]) //Falta verificacion de carga repetida
+int altaCliente(char nombreArchivo[])
 {
-    stCliente nuevo = cargarDatosDelCliente();////● Carga de Datos
+    stCliente nuevo;
     int cantidad = 0;
+    int validarCliente;
+
+    do
+    {
+        nuevo = cargarDatosDelCliente();  ////● Carga de Datos
+        validarCliente = ValidarClienteExistente (nombreArchivo,nuevo.dni); ////○ Verificar de no cargar repetidos
+
+        if(validarCliente == 1)
+        {
+            printf("El cliente que desea ingresar YA EXISTE en el sistema. Ingrese otro.\n");
+        }
+
+    }
+    while(validarCliente == 1);
 
     FILE *archi = fopen(nombreArchivo, "ab");
 
-    if(archi != NULL)
+    if(archi != NULL && (validarCliente == 0))
     {
         fwrite(&nuevo, sizeof(stCliente), 1, archi);//Escribe en el archivo
 
         printf("Cliente dado de alta correctamente.\n");////○ Aviso de Alta
         cantidad++;
+        fclose(archi);
     }
     else
     {
         printf("Error: no se pudo abrir el archivo.\n");
     }
-    fclose(archi);
+
     return cantidad;
 }
+
+int ValidarClienteExistente (char nombreArchivo[], char dni[])
+{
+    stCliente aux;
+    int encontrado = 0;
+
+    FILE *archi = fopen(nombreArchivo, "rb");
+    if(archi != NULL)
+    {
+        while(fread(&aux, sizeof(stCliente), 1, archi) > 0 && encontrado == 0)
+        {
+            if((strcmp(aux.dni, dni) == 0) && aux.activo == 1)
+                encontrado = 1;
+        }
+        fclose(archi);
+    }
+    return encontrado;
+}
+
 //-------------------------MOSTRAR CLIENTES-------------------------
 void mostrarUnCliente(stCliente unCliente)
 {
@@ -186,7 +230,7 @@ void MostrarClientes(char nombreArchivo[])
 }
 //-------------------------BAJA LOGICA-------------------------
 
-void DarDeBajaUnCliente(char nombreArchivo[], char dniBuscado[])
+void DarDeBajaUnCliente(char nombreArchivo[], char dniBuscado[]) //No esta muy justificado porque deberiamos borrar un cliente, pero si es necesario existe
 {
     int dniEncontrado = 0;
     stCliente aux;
@@ -251,7 +295,7 @@ void modificarTelefonoCliente(char nombreArchivo[], char dniBuscado[], char nuev
         printf("Error: no se pudo abrir el archivo.\n");
     }
 }
-//○ Consulta
+//○---------------------------Consulta
 //● Buscar una struct en particular de acuerdo a uno o varios campos a elección
 //del usuario del sistema y mostrar los distintos campos de la struct (por ejemplo:
 //buscar un empleado por su dni)
@@ -348,6 +392,29 @@ void mostrarArrDeClientes(stCliente arreglo[], int cantidad)
 
 //● Listar todos los datos por orden numérico por el método de inserción
 //(campo a elegir de acuerdo a las structs elegidas)
+
+//Ordenar por insercion - en relacion a su numero de Dni (ordena clientes de menores a mayores)
+
+void ordenarArregloPorInsercion(stCliente arreglo[], int cantidad)
+{
+    int i = 1;
+    while(i < cantidad)
+    {
+        insertar(arreglo, i-1, arreglo[i]);
+        i++;
+    }
+}
+
+void insertarDato(stCliente arreglo[], int ultPos, stCliente dato)
+{
+    int i = ultPos;
+    while(i >= 0 && strcmp(dato.dni, arreglo[i].dni) < 0)
+    {
+        arreglo[i+1] = arreglo[i];
+        i--;
+    }
+    arreglo[i+1] = dato;
+}
 //● Como opcional, y de forma adicional a lo anterior, pueden listar sólo los que
 //cumplan cierto criterio (listados con filtro - por ejemplo: todos los productos de
 //cierta categoría, todos los alumnos con nota del 6 al 8, etc)
