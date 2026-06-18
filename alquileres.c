@@ -256,5 +256,3 @@ float obtenerPrecioPorDia(char nombreArchivo[], char patenteBuscada[])
 
 
 
-
-
