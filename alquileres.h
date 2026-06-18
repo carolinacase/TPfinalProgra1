@@ -29,32 +29,18 @@ typedef struct
 void menuAlquileres(char archivoAlquileres[], char archivoVehiculos[], char archivoClientes[]);
 
 //FUNCIONES PARA CARGAR UN ALQUILER
+int solicitarYValidarCliente(char archivoClientes[], char destinoDni[]);
+int solicitarYValidarVehiculo(char archivoVehiculos[], char destinoPatente[]);
+stFecha calcularFechaFin(stFecha inicio, int diasAlquilados);
 int obtenerNuevoIdAlquiler(char nombreArchivo[]);
 void cargarAlquiler(stAlquiler *aux, int *diasAlquilados);
 float obtenerPrecioPorDia(char nombreArchivo[], char patenteBuscada[]);
 
+//FUNCION PARA DAR DE BAJA
+void bajaAlquiler(char nombreArchivo[]);
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+//FUNCION PARA MOSTRAR
+void mostrarAlquileres(char nombreArchivo[]);
+void mostrarAlquileresRecursivamente(FILE *archi);
 
 #endif
