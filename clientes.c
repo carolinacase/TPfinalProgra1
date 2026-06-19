@@ -56,7 +56,7 @@ void menuClientes(char archivoClientes[])
 
             break;
         case 5:
-        {
+            {
             int opcionOrden;
             printf("\n--- LISTAR CLIENTES ---\n");
             printf("1. Ordenar alfabeticamente por apellido (seleccion)\n");
@@ -79,8 +79,8 @@ void menuClientes(char archivoClientes[])
             }
             else
                 printf("No hay clientes registrados.\n");
-        }
-        break;
+            }
+            break;
         case 6:
             MostrarClientes(archivoClientes);
             break;
@@ -91,6 +91,8 @@ void menuClientes(char archivoClientes[])
             printf("Opcion invalida.\n");
             break;
         }
+        system("pause");
+        system("cls");
     }
     while(opcion != 0);
 }
@@ -190,7 +192,7 @@ int ValidarClienteExistente (char archivoClientes[], char dni[])
 void mostrarUnCliente(stCliente unCliente)
 {
     printf("-----------DATOS DEL CLIENTE-----------\n");
-    printf("  Nombre:    %s %s\n", unCliente.nombre, unCliente.apellido);
+    printf("  Nombre:    %s %s\n", unCliente.apellido, unCliente.nombre);
     printf("  DNI:       %s\n", unCliente.dni);
     printf("  Telefono:  %s\n", unCliente.telefono);
     printf("---------------------------------------\n");

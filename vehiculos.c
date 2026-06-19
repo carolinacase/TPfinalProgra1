@@ -428,9 +428,10 @@ void buscarYMostrarVehiculo(char nombreArchivo[])
     if(archi != NULL)
     {
         printf("Ingrese la patente a buscar: ");
-        getchar();
+        fflush(stdin);
         fgets(patenteBuscada, DIM_PATENTE, stdin);
         limpiarSaltoLinea(patenteBuscada);
+        strupr(patenteBuscada);
 
         // Funcion para convertir a mayusculas la patente ingresada
         strupr(patenteBuscada);
