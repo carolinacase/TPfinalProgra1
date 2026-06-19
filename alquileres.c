@@ -3,7 +3,6 @@
 void menuAlquileres(char archivoAlquileres[], char archivoVehiculos[], char archivoClientes[])
 {
     int opcion;
-    stAlquiler *arreglo = NULL;
     int cantidad;
 
     do
@@ -38,26 +37,35 @@ void menuAlquileres(char archivoAlquileres[], char archivoVehiculos[], char arch
         case 5:
         {
             int opcionOrden;
+            stAlquiler *arregloAlq = NULL;
+
             printf("\n--- ORDENAR ALQUILERES ---\n");
-            printf("1. Ordenar alfabeticamente\n");
-            printf("2. Ordenar por numero\n");
+            printf("1. Ordenar alfabeticamente por patente (seleccion)\n");
+            printf("2. Ordenar por costo total (insercion)\n");
             printf("Ingrese una opcion: ");
             scanf("%d", &opcionOrden);
-            cantidad = PasarClientesAunArreglo(archivoAlquileres, &arreglo);
+
+            cantidad = PasarAlquileresAunArreglo(archivoAlquileres, &arregloAlq);
 
             if(cantidad > 0)
             {
                 if(opcionOrden == 1)
-                    OrdenarClientesPorSeleccion(arreglo, cantidad);
+                {
+                    OrdenarAlquileresPorSeleccion(arregloAlq, cantidad);
+                }
                 else if(opcionOrden == 2)
-                    ordenarArregloPorInsercion(arreglo, cantidad);
+                {
+                    ordenarAlquileresPorInsercion(arregloAlq, cantidad);
+                }
 
-                mostrarArrDeClientes(arreglo, cantidad);
-                free(arreglo);
+                mostrarArrDeAlquileres(arregloAlq, cantidad);
+
+                free(arregloAlq);
             }
             else
-                printf("No hay clientes registrados.\n");
+                printf("No hay alquileres registrados.\n");
         }
+        break;
         case 6:
             mostrarAlquileres(archivoAlquileres);
             break;
@@ -500,6 +508,13 @@ void MostrarAlquileresFinalizados(char nombreArchivo[])
     }
 }
 
+void mostrarArrDeAlquileres (stAlquiler ArregloAlq[], int cantidad)
+{
+    for (int i = 0; i < cantidad; i++)
+    {
+        mostrarUnAlquiler(ArregloAlq[i]);
+    }
+}
 //○------------------------------ Listados --------------------------------
 //● Listar todos los datos por orden alfabético por el método de selección
 //(campo a elegir de acuerdo a las structs elegidas
@@ -567,7 +582,7 @@ void ordenarAlquileresPorInsercion(stAlquiler arreglo[], int cantidad)
 void insercionDeDato(stAlquiler arreglo[], int ultPos, stAlquiler aux)
 {
     int i = ultPos;
-    while(i >= 0 && aux.costoTotal == arreglo[i].costoTotal)
+    while(i >= 0 && aux.costoTotal < arreglo[i].costoTotal)
     {
         arreglo[i+1] = arreglo[i];
         i--;
