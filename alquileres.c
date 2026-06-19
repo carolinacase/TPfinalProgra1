@@ -27,7 +27,7 @@ void menuAlquileres(char archivoAlquileres[], char archivoVehiculos[], char arch
             bajaAlquiler(archivoAlquileres);
             break;
         case 3:
-            // modificarAlquiler(...)
+            modificarAlquiler(archivoAlquileres);
             break;
         case 4:
             // buscarAlquiler(...)
@@ -51,7 +51,7 @@ void menuAlquileres(char archivoAlquileres[], char archivoVehiculos[], char arch
 
 }
 
-//FUNCIONES PARA CARGAR UN ALQUILER
+// ALTA: GUARDA UN ALQUILER NUEVO EN EL ARCHIVO
 void altaAlquiler(char archivoAlquileres[], char archivoVehiculos[], char archivoClientes[])
 {
     stAlquiler aux;
@@ -72,13 +72,12 @@ void altaAlquiler(char archivoAlquileres[], char archivoVehiculos[], char archiv
     {
         aux.id = obtenerNuevoIdAlquiler(archivoAlquileres);
 
-        //aux.fechaFin = calcularFechaFin(aux.fechaInicio, dias);
-
         cargarAlquiler(&aux, &dias);
+
+        aux.fechaFin = calcularFechaFin(aux.fechaInicio, dias);
 
         float precioPorDia = obtenerPrecioPorDia(archivoVehiculos, aux.patente);
         aux.costoTotal = (float)dias * precioPorDia;
-
 
         FILE *archi = NULL;
         archi = fopen(archivoAlquileres, "ab");
@@ -89,8 +88,8 @@ void altaAlquiler(char archivoAlquileres[], char archivoVehiculos[], char archiv
             fclose(archi);
 
             printf("\n==============================================\n");
-            printf(" ¡ALQUILER REGISTRADO CON EXITO!\n");
-            //printf("Fin de alquiler: %d/%d/%d", aux.fechaFin.dia, aux.fechaFin.mes, aux.fechaFin.anio);
+            printf(" ALQUILER REGISTRADO CON EXITO!\n");
+            printf("Fin de alquiler: %d/%d/%d\n", aux.fechaFin.dia, aux.fechaFin.mes, aux.fechaFin.anio);
             printf(" ID Alquiler: %d\n", aux.id);
             printf(" Costo Total a pagar: $%.2f\n", aux.costoTotal);
             printf("==============================================\n");
@@ -98,6 +97,7 @@ void altaAlquiler(char archivoAlquileres[], char archivoVehiculos[], char archiv
     }
 }
 
+// GENERA UN ID QUE SE INCREMENTA BUSCANDO EL ULTIMO EN EL ARCHIVO
 int obtenerNuevoIdAlquiler(char nombreArchivo[])
 {
     int maxId = 0;
@@ -122,6 +122,7 @@ int obtenerNuevoIdAlquiler(char nombreArchivo[])
     return maxId + 1;
 }
 
+// CARGA LOS DATOS DE UN ALQUILER POR TECLADO
 void cargarAlquiler(stAlquiler *aux, int *diasAlquilados)
 {
     printf("Ingrese el dia de inicio: ");
@@ -139,6 +140,7 @@ void cargarAlquiler(stAlquiler *aux, int *diasAlquilados)
     aux->eliminado = 0;
 }
 
+//RETORNA EL PRECIO DEL VEHICULO PEDIDO
 float obtenerPrecioPorDia(char nombreArchivo[], char patenteBuscada[])
 {
     stVehiculo aux;
@@ -178,6 +180,7 @@ float obtenerPrecioPorDia(char nombreArchivo[], char patenteBuscada[])
     return precio;
 }
 
+//VALIDAR UN DNI EXISTENTE
 int solicitarYValidarCliente(char archivoClientes[], char destinoDni[])
 {
     int existeCliente = 0;
@@ -208,6 +211,7 @@ int solicitarYValidarCliente(char archivoClientes[], char destinoDni[])
     return 1;
 }
 
+//VALIDAR UNA PATENTE EXISTENTE
 int solicitarYValidarVehiculo(char archivoVehiculos[], char destinoPatente[])
 {
     int existeVehiculo = 0;
@@ -238,27 +242,29 @@ int solicitarYValidarVehiculo(char archivoVehiculos[], char destinoPatente[])
     return 1;
 }
 
-//stFecha calcularFechaFin(stFecha inicio, int diasAlquilados)
-//{
-//    stFecha fin = inicio;
-//
-//    fin.dia = fin.dia + diasAlquilados;
-//
-//    while (fin.dia > 30)
-//    {
-//        fin.dia = fin.dia - 30;
-//        fin.mes = fin.mes + 1;
-//    }
-//
-//    while (fin.mes > 12)
-//    {
-//        fin.mes = fin.mes - 12;
-//        fin.anio = fin.anio + 1;
-//    }
-//
-//    return fin;
-//}
+//CALCULAR FECHA EN QUE TERMINA UN ALQUILER
+stFecha calcularFechaFin(stFecha inicio, int diasAlquilados)
+{
+    stFecha fin = inicio;
 
+    fin.dia = fin.dia + diasAlquilados;
+
+    while (fin.dia > 30)
+    {
+        fin.dia = fin.dia - 30;
+        fin.mes = fin.mes + 1;
+    }
+
+    while (fin.mes > 12)
+    {
+        fin.mes = fin.mes - 12;
+        fin.anio = fin.anio + 1;
+    }
+
+    return fin;
+}
+
+//ELIMINAR ALQUILER
 void bajaAlquiler(char nombreArchivo[])
 {
     int encontrado = 0;
@@ -302,6 +308,7 @@ void bajaAlquiler(char nombreArchivo[])
     }
 }
 
+//MOSTRAR ALQUILERES
 void mostrarAlquileres(char nombreArchivo[])
 {
     FILE *archi = NULL;
@@ -328,13 +335,65 @@ void mostrarAlquileresRecursivamente(FILE *archi)
     {
         if(aux.eliminado == 0)
         {
-            printf("\n\n--- Alquiler ---\n\n");
+            printf("\n--- Alquiler ---\n");
             printf("ID:                  %d\n", aux.id);
-            printf("DNI:                 %s\n",     aux.dniCliente);
-            printf("Patente:             %s\n",     aux.patente);
+            printf("DNI:                 %s\n", aux.dniCliente);
+            printf("Patente:             %s\n", aux.patente);
             printf("Inicio de alquiler:  %d/%d/%d\n", aux.fechaInicio.dia, aux.fechaInicio.mes, aux.fechaInicio.anio);
-            printf("Costo total:         %.2f\n",     aux.costoTotal);
+            printf("Fin de alquiler:     %d/%d/%d\n", aux.fechaFin.dia, aux.fechaFin.mes, aux.fechaFin.anio);
+            printf("Costo total:         $%.2f\n", aux.costoTotal);
         }
         mostrarAlquileresRecursivamente(archi);
     }
 }
+
+//MODIFICAR ALQUILER
+void modificarAlquiler(char nombreArchivo[])
+{
+    stAlquiler aux;
+
+    int diasExtras;
+
+    int idBuscado = 0;
+
+    int encontrado = 0;
+
+    FILE *archi = NULL;
+
+    archi = fopen(nombreArchivo, "r+b");
+
+    if(archi != NULL)
+    {
+        printf("\nIngrese el ID del vehiculo a modificar: ");
+        scanf("%d", &idBuscado);
+
+        while(fread(&aux, sizeof(stAlquiler), 1, archi) > 0 && encontrado == 0)
+        {
+            if(aux.id == idBuscado && aux.eliminado == 0)
+            {
+                encontrado = 1;
+
+                printf("\nIngrese cuantos dias desea agregar al alquiler: ");
+                scanf("%d", &diasExtras);
+
+                aux.fechaFin = calcularFechaFin(aux.fechaFin, diasExtras);
+
+                fseek(archi, sizeof(stAlquiler) * (-1), SEEK_CUR);
+
+                fwrite(&aux, sizeof(stAlquiler), 1, archi);
+
+                fseek(archi, 0, SEEK_CUR);
+
+                printf("Dias modificados correctamente.\n");
+            }
+        }
+        fclose(archi);
+
+        if(encontrado == 0)
+        {
+            printf("No se encontro ningun alquiler activo con ID %d.\n", idBuscado);
+        }
+    }
+}
+
+
