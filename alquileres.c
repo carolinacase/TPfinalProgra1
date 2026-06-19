@@ -62,7 +62,7 @@ void menuAlquileres(char archivoAlquileres[], char archivoVehiculos[], char arch
             mostrarAlquileres(archivoAlquileres);
             break;
         case 7:
-            buscarYMostrarAlquileresFinalizados(archivoAlquileres);
+            MostrarAlquileresFinalizados(archivoAlquileres);
             break;
         case 0:
             break;
@@ -487,7 +487,7 @@ void MostrarAlquileresFinalizados(char nombreArchivo[])
 
         while(fread(&aux, sizeof(stAlquiler), 1, archi) > 0)
         {
-            if(strcmp(aux.patente, patenteBuscada) == 0 && aux.eliminado == 1)
+            if(aux.eliminado == 1)
             {
                 mostrarUnAlquiler(aux);
             }
