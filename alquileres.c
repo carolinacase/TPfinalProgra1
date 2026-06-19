@@ -469,10 +469,11 @@ void modificarAlquiler(char nombreArchivo[])
     stAlquiler aux;
 
     int diasExtras;
-
     int idBuscado = 0;
-
     int encontrado = 0;
+
+    mostrarAlquileres(nombreArchivo);
+
 
     FILE *archi = NULL;
 

@@ -23,7 +23,7 @@
 
 1781455904 D
 
-1781872671 source:c:\users\caro\documents\github\tpfinalprogra1\main.c
+1781875231 source:c:\users\caro\documents\github\tpfinalprogra1\main.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
@@ -32,7 +32,7 @@
 	"Clientes.h"
 	"alquileres.h"
 
-1781824284 c:\users\caro\documents\github\tpfinalprogra1\clientes.h
+1781875231 c:\users\caro\documents\github\tpfinalprogra1\clientes.h
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
@@ -55,7 +55,7 @@
 	<stdlib.h>
 	<string.h>
 
-1781873561 source:c:\users\caro\documents\github\tpfinalprogra1\clientes.c
+1781875231 source:c:\users\caro\documents\github\tpfinalprogra1\clientes.c
 	"Clientes.h"
 
 1781397884 h"
@@ -63,12 +63,12 @@
 1781708580 source:c:\users\melina\onedrive\documentos\github\tpfinalprogra1\vehiculos.c
 	"Vehiculos.h"
 
-1781857673 c:\users\caro\documents\github\tpfinalprogra1\vehiculos.h
+1781877539 c:\users\caro\documents\github\tpfinalprogra1\vehiculos.h
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
 
-1781872615 source:c:\users\caro\documents\github\tpfinalprogra1\vehiculos.c
+1781875231 source:c:\users\caro\documents\github\tpfinalprogra1\vehiculos.c
 	"Vehiculos.h"
 
 1782060000 source:c:\users\martin\documents\github\tpfinalprogra1\clientes.c
@@ -110,12 +110,12 @@
 1781708885 source:c:\users\melina\onedrive\documentos\github\tpfinalprogra1\alquileres.c
 	"Alquileres.h"
 
-1781872615 source:c:\users\caro\documents\github\tpfinalprogra1\alquileres.c
+1781877349 source:c:\users\caro\documents\github\tpfinalprogra1\alquileres.c
 	"alquileres.h"
 	<time.h>
 	"pila.h"
 
-1781864577 c:\users\caro\documents\github\tpfinalprogra1\alquileres.h
+1781875231 c:\users\caro\documents\github\tpfinalprogra1\alquileres.h
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
@@ -129,9 +129,9 @@
 	<stdio.h>
 	"pila.h"
 
-1781861913 c:\users\caro\documents\github\tpfinalprogra1\pila.h
+1781875231 c:\users\caro\documents\github\tpfinalprogra1\pila.h
 
-1781861913 source:c:\users\caro\documents\github\tpfinalprogra1\pila.c
+1781875231 source:c:\users\caro\documents\github\tpfinalprogra1\pila.c
 	<stdio.h>
 	"pila.h"
 

@@ -7,7 +7,7 @@
 
 #define DIM_PATENTE 8
 #define DIM_STRINGS 20
-#define DIM_VEHICULOS 1000
+#define DIM_VEHICULOS 10
 
 typedef struct
 {
