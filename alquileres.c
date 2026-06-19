@@ -38,11 +38,11 @@ void menuAlquileres(char archivoAlquileres[], char archivoVehiculos[], char arch
         {
             int opcionOrden;
             printf("\n--- ORDENAR ALQUILERES ---\n");
-            printf("1. Ordenar alfabeticamente por apellido (seleccion)\n");
-            printf("2. Ordenar por numero de DNI (insercion)\n");
+            printf("1. Ordenar alfabeticamente\n");
+            printf("2. Ordenar por numero\n");
             printf("Ingrese una opcion: ");
             scanf("%d", &opcionOrden);
-            cantidad = PasarClientesAunArreglo(nombreArchivo, &arreglo);
+            cantidad = PasarClientesAunArreglo(archivoAlquileres, &arreglo);
 
             if(cantidad > 0)
             {
@@ -457,11 +457,10 @@ void buscarYMostrarAlquiler(char nombreArchivo[])
         printf("Error: no se pudo abrir el archivo.\n");
     }
 }
-
+//MOSTRAR UN ALQUILER
 void mostrarUnAlquiler(stAlquiler aux)
 {
-    printf("\n--- ALQUILER ENCONTRADO ---\n");
-    printf("\n--- Alquiler ---\n");
+    printf("\n--- DATOS DEL ALQUILER  ---\n");
     printf("ID:                  %d\n", aux.id);
     printf("DNI:                 %s\n", aux.dniCliente);
     printf("Patente:             %s\n", aux.patente);
@@ -483,7 +482,7 @@ int PasarAlquileresAunArreglo(char nombreArchivo[], stAlquiler **arreglo)
     {
         while(fread(&aux, sizeof(stAlquiler), 1, archi) > 0)
         {
-            if(aux.activo == 1)
+            if(aux.eliminado == 0)
             {
                 *arreglo = realloc(*arreglo, (cantidad + 1) * sizeof(stAlquiler));
                 (*arreglo)[cantidad] = aux;
@@ -498,24 +497,49 @@ int PasarAlquileresAunArreglo(char nombreArchivo[], stAlquiler **arreglo)
     }
     return cantidad;
 }
-//ORDENAMIENTO POR INSERCION
-void ordenarArregloPorInsercion(stAlquiler arreglo[], int cantidad)
+//---------OR. POR SELECCION--------
+void OrdenarAlquileresPorSeleccion(stAlquiler arreglo[], int cantidad)
+{
+    int i;
+    int j;
+    int minPos;
+    stAlquiler temp;
+
+    for(i = 0; i < cantidad - 1; i++)
+    {
+        minPos = i;
+        for(j = i + 1; j < cantidad; j++)
+        {
+            if(strcmp(arreglo[j].patente, arreglo[minPos].patente) < 0)
+                minPos = j;
+        }
+        if(minPos != i)
+        {
+            temp = arreglo[i];
+            arreglo[i] = arreglo[minPos];
+            arreglo[minPos] = temp;
+        }
+    }
+}
+
+//---------OR. POR INSERCION--------
+void ordenarAlquileresPorInsercion(stAlquiler arreglo[], int cantidad)
 {
     int i = 1;
     while(i < cantidad)
     {
-        insertar(arreglo, i-1, arreglo[i]);
+        insercionDeDato(arreglo, i-1, arreglo[i]);
         i++;
     }
 }
 
-void insertarDato(stAlquiler arreglo[], int ultPos, stCliente dato)
+void insercionDeDato(stAlquiler arreglo[], int ultPos, stAlquiler aux)
 {
     int i = ultPos;
-    while(i >= 0 && strcmp(dato.dni, arreglo[i].dni) < 0)
+    while(i >= 0 && aux.costoTotal == arreglo[i].costoTotal)
     {
         arreglo[i+1] = arreglo[i];
         i--;
     }
-    arreglo[i+1] = dato;
+    arreglo[i+1] = aux;
 }

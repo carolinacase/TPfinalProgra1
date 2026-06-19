@@ -53,7 +53,9 @@ void mostrarUnAlquiler(stAlquiler aux);
 //FUNCION PARA PASAR LOS ALQUILERES EXISTENTES EN EL ARCHIVO A UN ARREGLO DINAMICO
 int PasarAlquileresAunArreglo(char nombreArchivo[], stAlquiler **arreglo);
 
-//FUNCION PARA ORDENAR LOS ALQUILERES ALFABETICAMENTE (CON SELECCION)
-void OrdenarClientesPorSeleccion(stAlquiler arreglo[], int cantidad);
+//FUNCION DE ORDENAMIENTOS PARA LOS ALQUILERES
+void OrdenarAlquileresPorSeleccion(stAlquiler arreglo[], int cantidad);
+void ordenarAlquileresPorInsercion(stAlquiler arreglo[], int cantidad);
+void insercionDeDato(stAlquiler arreglo[], int ultPos, stAlquiler aux);
 
 #endif
