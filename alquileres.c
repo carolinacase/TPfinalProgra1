@@ -30,7 +30,7 @@ void menuAlquileres(char archivoAlquileres[], char archivoVehiculos[], char arch
             modificarAlquiler(archivoAlquileres);
             break;
         case 4:
-            // buscarAlquiler(...)
+            buscarYMostrarAlquiler(archivoAlquileres);
             break;
         case 5:
             // menuOrdenacionAlquileres(...)
@@ -395,5 +395,83 @@ void modificarAlquiler(char nombreArchivo[])
         }
     }
 }
+
+//BUSCAR Y MOSTRAR ALQUILER
+void buscarYMostrarAlquiler(char nombreArchivo[])
+{
+    stAlquiler aux;
+    char patenteBuscada[DIM_PATENTE];
+    int encontrado = 0;
+
+    FILE *archi = NULL;
+
+    archi = fopen(nombreArchivo, "rb");
+
+    if(archi != NULL)
+    {
+        printf("Ingrese la patente a buscar: ");
+        getchar();
+        fgets(patenteBuscada, DIM_PATENTE, stdin);
+        limpiarSaltoLinea(patenteBuscada);
+
+        while(fread(&aux, sizeof(stAlquiler), 1, archi) > 0 && encontrado == 0)
+        {
+            if(strcmp(aux.patente, patenteBuscada) == 0 && aux.eliminado == 0)
+            {
+                encontrado = 1;
+
+                mostrarUnAlquiler(aux);
+            }
+        }
+        fclose(archi);
+
+        if(encontrado == 0)
+        {
+            printf("\nNo se encontro ningun vehiculo activo con la patente: %s\n", patenteBuscada);
+        }
+    }
+    else
+    {
+        printf("Error: no se pudo abrir el archivo.\n");
+    }
+}
+
+void mostrarUnAlquiler(stAlquiler aux)
+{
+    printf("\n--- ALQUILER ENCONTRADO ---\n");
+    printf("\n--- Alquiler ---\n");
+    printf("ID:                  %d\n", aux.id);
+    printf("DNI:                 %s\n", aux.dniCliente);
+    printf("Patente:             %s\n", aux.patente);
+    printf("Inicio de alquiler:  %d/%d/%d\n", aux.fechaInicio.dia, aux.fechaInicio.mes, aux.fechaInicio.anio);
+    printf("Fin de alquiler:     %d/%d/%d\n", aux.fechaFin.dia, aux.fechaFin.mes, aux.fechaFin.anio);
+    printf("Costo total:         $%.2f\n", aux.costoTotal);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
