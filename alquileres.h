@@ -46,5 +46,8 @@ void mostrarAlquileresRecursivamente(FILE *archi);
 //FUNCION PARA MODIFICAR
 void modificarAlquiler(char nombreArchivo[]);
 
+//FUNCION PARA BUSCAR Y MOSTRAR UN ALQUILER
+void buscarYMostrarAlquiler(char nombreArchivo[]);
+void mostrarUnAlquiler(stAlquiler aux);
 
 #endif
