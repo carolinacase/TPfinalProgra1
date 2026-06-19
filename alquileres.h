@@ -43,4 +43,8 @@ void bajaAlquiler(char nombreArchivo[]);
 void mostrarAlquileres(char nombreArchivo[]);
 void mostrarAlquileresRecursivamente(FILE *archi);
 
+//FUNCION PARA MODIFICAR
+void modificarAlquiler(char nombreArchivo[]);
+
+
 #endif

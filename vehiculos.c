@@ -276,7 +276,9 @@ void modificarVehiculo(char nombreArchivo[])
 
     mostrarVehiculos(nombreArchivo);
 
-    FILE *archi = fopen(nombreArchivo, "r+b");
+    FILE *archi = NULL;
+
+    archi = fopen(nombreArchivo, "r+b");
 
     if(archi != NULL)
     {
@@ -306,7 +308,9 @@ void modificarVehiculo(char nombreArchivo[])
         fclose(archi);
 
         if(encontrado == 0)
+        {
             printf("No se encontro ningun vehiculo activo con ID %d.\n", idBuscado);
+        }
     }
 }
 
