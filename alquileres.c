@@ -10,17 +10,17 @@ void menuAlquileres(char archivoAlquileres[], char archivoVehiculos[], char arch
     do
     {
         printf("===================================\n");
-        printf("       SISTEMA DE RENT-A-CAR       \n");
+        printf("       GESTION DE ALQUILERES       \n");
         printf("===================================\n");
-        printf("1. Alta - Registrar un Alquiler\n");
-        printf("2. Baja - Cancelar/Finalizar Alquiler\n");
-        printf("3. Modificacion - Modificar Alquiler\n");
-        printf("4. Consulta (Vehiculo por Patente)\n");
-        printf("5. Listar todos los datos (ORDENAMIENTOS)\n");
-        printf("6. Mostrar alquileres\n");
+        printf("1. Alta     - Registrar un alquiler\n");
+        printf("2. Baja     - Cancelar/Finalizar alquiler\n");
+        printf("3. Modificar- Agregar dias al alquiler\n");
+        printf("4. Consulta - Buscar alquiler por patente\n");
+        printf("5. Listar   - Ordenar alquileres\n");
+        printf("6. Mostrar  - Mostrar alquileres\n");
         printf("0. Volver al menu principal\n");
-
-        printf("\nIngrese una opcion: ");
+        printf("===================================\n");
+        printf("Ingrese una opcion: ");
         scanf("%d", &opcion);
 
         switch(opcion)

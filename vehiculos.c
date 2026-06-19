@@ -10,17 +10,16 @@ void menuVehiculos(char nombreArchivo[])
         printf("===================================\n");
         printf("       GESTION DE VEHICULOS        \n");
         printf("===================================\n");
-        printf("1. Cargar vehiculo\n");
-        printf("2. Eliminar vehiculo\n");
-        printf("3. Modificar vehiculo\n");
-        printf("4. Buscar vehiculo\n");
-        printf("5. Ordenar Vehiculos\n");
-        printf("6. Mostrar Vehiculos\n");
+        printf("1. Alta     - Dar de alta un vehiculo\n");
+        printf("2. Baja     - Dar de baja un vehiculo\n");
+        printf("3. Modificar- Modificar precio por dia\n");
+        printf("4. Consulta - Buscar vehiculo por patente\n");
+        printf("5. Listar   - Ordenar vehiculos\n");
+        printf("6. Mostrar  - Mostrar todos los vehiculos\n");
         printf("0. Volver al menu principal\n");
-
+        printf("===================================\n");
         printf("Ingrese una opcion: ");
         scanf("%d", &opcion);
-
         switch(opcion)
         {
         case 1:

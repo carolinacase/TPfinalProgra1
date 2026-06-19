@@ -16,14 +16,15 @@ void menuClientes(char archivoClientes[])
         printf("===================================\n");
         printf("        GESTION DE CLIENTES        \n");
         printf("===================================\n");
-        printf("1. Alta - Dar de alta un cliente\n"); //
-        printf("2. Baja - Dar de baja un cliente\n");
-        printf("3. Modificacion - Modificar Cliente\n");
-        printf("4. Consulta - Consulta (Cliente por Dni)\n");
-        printf("5. Listar todos los datos (ORDENAMIENTOS)\n");
-        printf("6. Mostrar clientes\n");
+        printf("1. Alta     - Dar de alta un cliente\n");
+        printf("2. Baja     - Dar de baja un cliente\n");
+        printf("3. Modificar- Modificar telefono\n");
+        printf("4. Consulta - Buscar cliente por DNI\n");
+        printf("5. Listar   - Ordenar clientes\n");
+        printf("6. Mostrar  - Mostrar todos los clientes\n");
         printf("0. Volver al menu principal\n");
-        printf("Ingrese una opcion:\n");
+        printf("===================================\n");
+        printf("Ingrese una opcion: ");
         scanf("%d", &opcion);
 
         switch(opcion)
