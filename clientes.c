@@ -13,13 +13,15 @@ void menuClientes(char archivoClientes[])
 
     do
     {
-        printf("\n--- MENU CLIENTES ---\n");
-        printf("1. Alta de cliente\n"); //
-        printf("2. Mostrar clientes\n");
-        printf("3. Dar de baja un cliente\n");
-        printf("4. Modificar Contacto\n");
-        printf("5. Buscar Cliente por DNI\n");
-        printf("6. Ordenar Alfabeticamente (Con Seleccion)\n");
+        printf("===================================\n");
+        printf("        GESTION DE CLIENTES        \n");
+        printf("===================================\n");
+        printf("1. Alta - Dar de alta un cliente\n"); //
+        printf("2. Baja - Dar de baja un cliente\n");
+        printf("3. Modificacion - Modificar Cliente\n");
+        printf("4. Consulta - Consulta (Cliente por Dni)\n");
+        printf("5. Listar todos los datos (ORDENAMIENTOS)\n");
+        printf("6. Mostrar clientes\n");
         printf("0. Volver al menu principal\n");
         printf("Ingrese una opcion:\n");
         scanf("%d", &opcion);
@@ -30,16 +32,12 @@ void menuClientes(char archivoClientes[])
             validos = altaCliente(archivoClientes);
             break;
         case 2:
-            MostrarClientes(archivoClientes);
-            break;
-        case 3:
             printf("Ingrese el DNI del cliente que desea dar de baja:\n");
             fflush(stdin);
             scanf("%s", dniBuscado);
             DarDeBajaUnCliente(archivoClientes, dniBuscado);
             break;
-
-        case 4:
+        case 3:
             printf("Ingrese el DNI del cliente a modificar:\n");
             fflush(stdin);
             scanf("%s", dniModificar);
@@ -48,16 +46,18 @@ void menuClientes(char archivoClientes[])
             scanf("%s", nuevoTel);
             modificarTelefonoCliente(archivoClientes, dniModificar, nuevoTel);
             break;
-        case 5:
+
+        case 4:
             printf("Ingrese el DNI del cliente para buscar:\n");
             fflush(stdin);
             scanf("%s", dniEncontrado);
             consultarCliente(archivoClientes, dniEncontrado);
+
             break;
-        case 6:
+        case 5:
         {
             int opcionOrden;
-            printf("\n--- ORDENAR CLIENTES ---\n");
+            printf("\n--- LISTAR CLIENTES ---\n");
             printf("1. Ordenar alfabeticamente por apellido (seleccion)\n");
             printf("2. Ordenar por numero de DNI (insercion)\n");
             printf("Ingrese una opcion: ");
@@ -69,17 +69,20 @@ void menuClientes(char archivoClientes[])
                 if(opcionOrden == 1)
                     OrdenarClientesPorSeleccion(arreglo, cantidad);
                 else if(opcionOrden == 2)
+                {
                     ordenarArregloPorInsercion(arreglo, cantidad);
-
+                }
                 mostrarArrDeClientes(arreglo, cantidad);
                 free(arreglo);
+                arreglo = NULL; // se resetea a NULL para que realloc funcione en la proxima llamada, sino se rompe
             }
             else
                 printf("No hay clientes registrados.\n");
         }
         break;
-
-
+        case 6:
+            MostrarClientes(archivoClientes);
+            break;
         case 0:
             printf("Salir.\n");
             break;

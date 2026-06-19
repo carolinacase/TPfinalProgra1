@@ -45,6 +45,13 @@ void mostrarAlquileres(char nombreArchivo[]);
 void mostrarAlquileresRecursivamente(FILE *archi);
 void MostrarAlquileresFinalizados(char nombreArchivo[]);
 void mostrarArrDeAlquileres (stAlquiler ArregloAlq[], int cantidad);
+
+//FUNCIONES PARA MOSTRAR LOS ALQUILERES RECIENTES
+void mostrarAlquileresRecientesEnPila(char nombreArchivo[]);
+void copiarIdsAPila(char nombreArchivo[], Pila *destino);
+void mostrarAlquileresPorId(char nombreArchivo[], int id);
+
+
 //FUNCION PARA FILTRAR POR PATENTE Y MOSTRAR UN ALQUILER
 void buscarYMostrarAlquiler(char nombreArchivo[]);
 void mostrarUnAlquiler(stAlquiler aux);
@@ -60,9 +67,5 @@ void OrdenarAlquileresPorSeleccion(stAlquiler arreglo[], int cantidad);
 void ordenarAlquileresPorInsercion(stAlquiler arreglo[], int cantidad);
 void insercionDeDato(stAlquiler arreglo[], int ultPos, stAlquiler aux);
 
-//FUNCIONES PARA MOSTRAR LOS ALQUILERES RECIENTES
-void mostrarAlquileresRecientesEnPila(char nombreArchivo[]);
-void copiarIdsAPila(char nombreArchivo[], Pila *destino);
-void mostrarAlquileresPorId(char nombreArchivo[], int id);
 
 #endif

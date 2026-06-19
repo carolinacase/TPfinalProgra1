@@ -12,14 +12,12 @@ void menuAlquileres(char archivoAlquileres[], char archivoVehiculos[], char arch
         printf("===================================\n");
         printf("       SISTEMA DE RENT-A-CAR       \n");
         printf("===================================\n");
-        printf("1. Registrar un Alquiler\n");
-        printf("2. Cancelar/Finalizar Alquiler\n");
-        printf("3. Modificar Alquiler\n");
-        printf("4. Buscar Alquiler\n");
-        printf("5. Ordenar alquileres\n");
-        printf("6. Mostrar alquileres Activos\n");
-        printf("7. Mostrar alquileres Finalizados\n");
-        printf("8. Mostrar alquileres recientes\n");
+        printf("1. Alta - Registrar un Alquiler\n");
+        printf("2. Baja - Cancelar/Finalizar Alquiler\n");
+        printf("3. Modificacion - Modificar Alquiler\n");
+        printf("4. Consulta (Vehiculo por Patente)\n");
+        printf("5. Listar todos los datos (ORDENAMIENTOS)\n");
+        printf("6. Mostrar alquileres\n");
         printf("0. Volver al menu principal\n");
 
         printf("\nIngrese una opcion: ");
@@ -72,14 +70,25 @@ void menuAlquileres(char archivoAlquileres[], char archivoVehiculos[], char arch
         }
         break;
         case 6:
-            mostrarAlquileres(archivoAlquileres);
-            break;
-        case 7:
-            MostrarAlquileresFinalizados(archivoAlquileres);
-            break;
-        case 8:
-            mostrarAlquileresRecientesEnPila(archivoAlquileres);
-            break;
+        {
+            int opcionMostrar;
+            printf("\n--- MOSTRAR ALQUILERES ---\n");
+            printf("1. Alquileres activos\n");
+            printf("2. Alquileres finalizados\n");
+            printf("3. Alquileres recientes\n");
+            printf("Ingrese una opcion: ");
+            scanf("%d", &opcionMostrar);
+
+            if(opcionMostrar == 1)
+                mostrarAlquileres(archivoAlquileres);
+            else if(opcionMostrar == 2)
+                MostrarAlquileresFinalizados(archivoAlquileres);
+            else if(opcionMostrar == 3)
+                mostrarAlquileresRecientesEnPila(archivoAlquileres);
+            else
+                printf("Opcion invalida.\n");
+        }
+        break;
         case 0:
             break;
         default:

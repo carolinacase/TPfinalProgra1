@@ -7,7 +7,9 @@ void menuVehiculos(char nombreArchivo[])
 
     do
     {
-        printf("\n--- MENU VEHICULOS ---\n");
+        printf("===================================\n");
+        printf("       GESTION DE VEHICULOS        \n");
+        printf("===================================\n");
         printf("1. Cargar vehiculo\n");
         printf("2. Eliminar vehiculo\n");
         printf("3. Modificar vehiculo\n");
