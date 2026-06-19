@@ -50,4 +50,10 @@ void modificarAlquiler(char nombreArchivo[]);
 void buscarYMostrarAlquiler(char nombreArchivo[]);
 void mostrarUnAlquiler(stAlquiler aux);
 
+//FUNCION PARA PASAR LOS ALQUILERES EXISTENTES EN EL ARCHIVO A UN ARREGLO DINAMICO
+int PasarAlquileresAunArreglo(char nombreArchivo[], stAlquiler **arreglo);
+
+//FUNCION PARA ORDENAR LOS ALQUILERES ALFABETICAMENTE (CON SELECCION)
+void OrdenarClientesPorSeleccion(stAlquiler arreglo[], int cantidad);
+
 #endif

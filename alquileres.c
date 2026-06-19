@@ -3,6 +3,8 @@
 void menuAlquileres(char archivoAlquileres[], char archivoVehiculos[], char archivoClientes[])
 {
     int opcion;
+    stAlquiler *arreglo = NULL;
+    int cantidad;
 
     do
     {
@@ -33,8 +35,28 @@ void menuAlquileres(char archivoAlquileres[], char archivoVehiculos[], char arch
             buscarYMostrarAlquiler(archivoAlquileres);
             break;
         case 5:
-            // menuOrdenacionAlquileres(...)
-            break;
+        {
+            int opcionOrden;
+            printf("\n--- ORDENAR ALQUILERES ---\n");
+            printf("1. Ordenar alfabeticamente por apellido (seleccion)\n");
+            printf("2. Ordenar por numero de DNI (insercion)\n");
+            printf("Ingrese una opcion: ");
+            scanf("%d", &opcionOrden);
+            cantidad = PasarClientesAunArreglo(nombreArchivo, &arreglo);
+
+            if(cantidad > 0)
+            {
+                if(opcionOrden == 1)
+                    OrdenarClientesPorSeleccion(arreglo, cantidad);
+                else if(opcionOrden == 2)
+                    ordenarArregloPorInsercion(arreglo, cantidad);
+
+                mostrarArrDeClientes(arreglo, cantidad);
+                free(arreglo);
+            }
+            else
+                printf("No hay clientes registrados.\n");
+        }
         case 6:
             mostrarAlquileres(archivoAlquileres);
             break;
@@ -134,7 +156,7 @@ void cargarAlquiler(stAlquiler *aux, int *diasAlquilados)
     printf("Ingrese el anio de inicio: ");
     scanf("%d", &aux->fechaInicio.anio);
 
-    printf("�Por cuantos dias se alquila el vehiculo?: ");
+    printf("¿Por cuantos dias se alquila el vehiculo?: ");
     scanf("%d", diasAlquilados);
 
     aux->eliminado = 0;
@@ -448,30 +470,52 @@ void mostrarUnAlquiler(stAlquiler aux)
     printf("Costo total:         $%.2f\n", aux.costoTotal);
 }
 
+//○------------------------------ Listados --------------------------------
+//● Listar todos los datos por orden alfabético por el método de selección
+//(campo a elegir de acuerdo a las structs elegidas
+int PasarAlquileresAunArreglo(char nombreArchivo[], stAlquiler **arreglo)
+{
+    int cantidad = 0;
+    stAlquiler aux;
 
+    FILE *archi = fopen(nombreArchivo, "rb");
+    if(archi != NULL)
+    {
+        while(fread(&aux, sizeof(stAlquiler), 1, archi) > 0)
+        {
+            if(aux.activo == 1)
+            {
+                *arreglo = realloc(*arreglo, (cantidad + 1) * sizeof(stAlquiler));
+                (*arreglo)[cantidad] = aux;
+                cantidad++;
+            }
+        }
+        fclose(archi);
+    }
+    else
+    {
+        printf("Error: no se pudo abrir el archivo.\n");
+    }
+    return cantidad;
+}
+//ORDENAMIENTO POR INSERCION
+void ordenarArregloPorInsercion(stAlquiler arreglo[], int cantidad)
+{
+    int i = 1;
+    while(i < cantidad)
+    {
+        insertar(arreglo, i-1, arreglo[i]);
+        i++;
+    }
+}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+void insertarDato(stAlquiler arreglo[], int ultPos, stCliente dato)
+{
+    int i = ultPos;
+    while(i >= 0 && strcmp(dato.dni, arreglo[i].dni) < 0)
+    {
+        arreglo[i+1] = arreglo[i];
+        i--;
+    }
+    arreglo[i+1] = dato;
+}

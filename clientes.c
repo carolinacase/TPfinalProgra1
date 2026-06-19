@@ -1,6 +1,6 @@
 #include "Clientes.h"
 
-void menuClientes(char nombreArchivo[])
+void menuClientes(char archivoClientes[])
 {
     int opcion;
     int validos;
@@ -27,16 +27,16 @@ void menuClientes(char nombreArchivo[])
         switch(opcion)
         {
         case 1:
-            validos = altaCliente(nombreArchivo);
+            validos = altaCliente(archivoClientes);
             break;
         case 2:
-            MostrarClientes(nombreArchivo);
+            MostrarClientes(archivoClientes);
             break;
         case 3:
             printf("Ingrese el DNI del cliente que desea dar de baja:\n");
             fflush(stdin);
             scanf("%s", dniBuscado);
-            DarDeBajaUnCliente(nombreArchivo, dniBuscado);
+            DarDeBajaUnCliente(archivoClientes, dniBuscado);
             break;
 
         case 4:
@@ -46,13 +46,13 @@ void menuClientes(char nombreArchivo[])
             printf("Ingrese el nuevo telefono: ");
             fflush(stdin);
             scanf("%s", nuevoTel);
-            modificarTelefonoCliente(nombreArchivo, dniModificar, nuevoTel);
+            modificarTelefonoCliente(archivoClientes, dniModificar, nuevoTel);
             break;
         case 5:
             printf("Ingrese el DNI del cliente para buscar:\n");
             fflush(stdin);
             scanf("%s", dniEncontrado);
-            consultarCliente(nombreArchivo, dniEncontrado);
+            consultarCliente(archivoClientes, dniEncontrado);
             break;
         case 6:
         {
@@ -62,7 +62,7 @@ void menuClientes(char nombreArchivo[])
             printf("2. Ordenar por numero de DNI (insercion)\n");
             printf("Ingrese una opcion: ");
             scanf("%d", &opcionOrden);
-            cantidad = PasarClientesAunArreglo(nombreArchivo, &arreglo);
+            cantidad = PasarClientesAunArreglo(archivoClientes, &arreglo);
 
             if(cantidad > 0)
             {
@@ -127,7 +127,7 @@ stCliente cargarDatosDelCliente()
     return cliente;
 }
 
-int altaCliente(char nombreArchivo[])
+int altaCliente(char archivoClientes[])
 {
     stCliente nuevo;
     int cantidad = 0;
@@ -136,7 +136,7 @@ int altaCliente(char nombreArchivo[])
     do
     {
         nuevo = cargarDatosDelCliente();  ////● Carga de Datos
-        validarCliente = ValidarClienteExistente (nombreArchivo,nuevo.dni); ////○ Verificar de no cargar repetidos
+        validarCliente = ValidarClienteExistente (archivoClientes,nuevo.dni); ////○ Verificar de no cargar repetidos
 
         if(validarCliente == 1)
         {
@@ -146,7 +146,7 @@ int altaCliente(char nombreArchivo[])
     }
     while(validarCliente == 1);
 
-    FILE *archi = fopen(nombreArchivo, "ab");
+    FILE *archi = fopen(archivoClientes, "ab");
 
     if(archi != NULL && (validarCliente == 0))
     {
@@ -164,12 +164,12 @@ int altaCliente(char nombreArchivo[])
     return cantidad;
 }
 
-int ValidarClienteExistente (char nombreArchivo[], char dni[])
+int ValidarClienteExistente (char archivoClientes[], char dni[])
 {
     stCliente aux;
     int encontrado = 0;
 
-    FILE *archi = fopen(nombreArchivo, "rb");
+    FILE *archi = fopen(archivoClientes, "rb");
     if(archi != NULL)
     {
         while(fread(&aux, sizeof(stCliente), 1, archi) > 0 && encontrado == 0)
@@ -193,12 +193,12 @@ void mostrarUnCliente(stCliente unCliente)
 
 }
 
-void MostrarClientes(char nombreArchivo[])
+void MostrarClientes(char archivoClientes[])
 {
     stCliente aux;
     int contador = 0;
 
-    FILE *archi = fopen(nombreArchivo, "rb");
+    FILE *archi = fopen(archivoClientes, "rb");
 
     if(archi != NULL)
     {
@@ -230,12 +230,12 @@ void MostrarClientes(char nombreArchivo[])
 }
 //-------------------------BAJA LOGICA-------------------------
 
-void DarDeBajaUnCliente(char nombreArchivo[], char dniBuscado[]) //No esta muy justificado porque deberiamos borrar un cliente, pero si es necesario existe
+void DarDeBajaUnCliente(char archivoClientes[], char dniBuscado[]) //No esta muy justificado porque deberiamos borrar un cliente, pero si es necesario existe
 {
     int dniEncontrado = 0;
     stCliente aux;
 
-    FILE *archi = fopen(nombreArchivo, "r+b");
+    FILE *archi = fopen(archivoClientes, "r+b");
 
     if(archi != NULL)
     {
@@ -265,12 +265,12 @@ void DarDeBajaUnCliente(char nombreArchivo[], char dniBuscado[]) //No esta muy j
 //----------------------MODIFICAR TELEFONO DEL CLIENTE -----------------
 //los demas datos no deberian ser modificados ya que dni y nombre del cliente no deberian cambiarse
 
-void modificarTelefonoCliente(char nombreArchivo[], char dniBuscado[], char nuevoTelefono[])
+void modificarTelefonoCliente(char archivoClientes[], char dniBuscado[], char nuevoTelefono[])
 {
     int dniEncontrado = 0;
     stCliente aux;
 
-    FILE *archi = fopen(nombreArchivo, "r+b");
+    FILE *archi = fopen(archivoClientes, "r+b");
 
     if(archi != NULL)
     {
@@ -300,12 +300,12 @@ void modificarTelefonoCliente(char nombreArchivo[], char dniBuscado[], char nuev
 //del usuario del sistema y mostrar los distintos campos de la struct (por ejemplo:
 //buscar un empleado por su dni)
 
-void consultarCliente(char nombreArchivo[], char dniBuscado[])
+void consultarCliente(char archivoClientes[], char dniBuscado[])
 {
     int dniEncontrado = 0;
     stCliente aux;
 
-    FILE *archi = fopen(nombreArchivo, "rb");
+    FILE *archi = fopen(archivoClientes, "rb");
 
     if(archi != NULL)
     {
@@ -330,13 +330,13 @@ void consultarCliente(char nombreArchivo[], char dniBuscado[])
 
 //○------------------------------ Listados --------------------------------
 //● Listar todos los datos por orden alfabético por el método de selección
-//(campo a elegir de acuerdo a las structs elegidas)int PasarClientesAunArreglo(char nombreArchivo[], stCliente **arreglo)
-int PasarClientesAunArreglo(char nombreArchivo[], stCliente **arreglo)
+//(campo a elegir de acuerdo a las structs elegidas)int PasarClientesAunArreglo(char archivoClientes[], stCliente **arreglo)
+int PasarClientesAunArreglo(char archivoClientes[], stCliente **arreglo)
 {
     int cantidad = 0;
     stCliente aux;
 
-    FILE *archi = fopen(nombreArchivo, "rb");
+    FILE *archi = fopen(archivoClientes, "rb");
     if(archi != NULL)
     {
         while(fread(&aux, sizeof(stCliente), 1, archi) > 0)
