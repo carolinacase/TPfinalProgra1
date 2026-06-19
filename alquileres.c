@@ -14,7 +14,8 @@ void menuAlquileres(char archivoAlquileres[], char archivoVehiculos[], char arch
         printf("3. Modificar Alquiler\n");
         printf("4. Buscar Alquiler\n");
         printf("5. Ordenar alquileres\n");
-        printf("6. Mostrar alquileres\n");
+        printf("6. Mostrar alquileres Activos\n");
+        printf("7. Mostrar alquileres Finalizados\n");
         printf("0. Volver al menu principal\n");
 
         printf("\nIngrese una opcion: ");
@@ -59,6 +60,9 @@ void menuAlquileres(char archivoAlquileres[], char archivoVehiculos[], char arch
         }
         case 6:
             mostrarAlquileres(archivoAlquileres);
+            break;
+        case 7:
+            buscarYMostrarAlquileresFinalizados(archivoAlquileres);
             break;
         case 0:
             break;
@@ -156,7 +160,7 @@ void cargarAlquiler(stAlquiler *aux, int *diasAlquilados)
     printf("Ingrese el anio de inicio: ");
     scanf("%d", &aux->fechaInicio.anio);
 
-    printf("¿Por cuantos dias se alquila el vehiculo?: ");
+    printf("Por cuantos dias se alquila el vehiculo?: ");
     scanf("%d", diasAlquilados);
 
     aux->eliminado = 0;
@@ -348,7 +352,7 @@ void mostrarAlquileres(char nombreArchivo[])
         printf("\nERROR: No hay vehiculos cargados\n");
     }
 }
-
+//MOSTRAR TODOS LOS ALQUILERES (CON RECURSIVA)
 void mostrarAlquileresRecursivamente(FILE *archi)
 {
     stAlquiler aux;
@@ -417,8 +421,19 @@ void modificarAlquiler(char nombreArchivo[])
         }
     }
 }
+//MOSTRAR UN ALQUILER
+void mostrarUnAlquiler(stAlquiler aux)
+{
+    printf("\n--- DATOS DEL ALQUILER  ---\n");
+    printf("ID:                  %d\n", aux.id);
+    printf("DNI:                 %s\n", aux.dniCliente);
+    printf("Patente:             %s\n", aux.patente);
+    printf("Inicio de alquiler:  %d/%d/%d\n", aux.fechaInicio.dia, aux.fechaInicio.mes, aux.fechaInicio.anio);
+    printf("Fin de alquiler:     %d/%d/%d\n", aux.fechaFin.dia, aux.fechaFin.mes, aux.fechaFin.anio);
+    printf("Costo total:         $%.2f\n", aux.costoTotal);
+}
 
-//BUSCAR Y MOSTRAR ALQUILER
+//BUSCAR Y MOSTRAR UN ALQUILER ESPECIFICO
 void buscarYMostrarAlquiler(char nombreArchivo[])
 {
     stAlquiler aux;
@@ -457,16 +472,32 @@ void buscarYMostrarAlquiler(char nombreArchivo[])
         printf("Error: no se pudo abrir el archivo.\n");
     }
 }
-//MOSTRAR UN ALQUILER
-void mostrarUnAlquiler(stAlquiler aux)
+
+//BUSCAR Y MOSTRAR ALQUILERES DADOS DE BAJA
+void MostrarAlquileresFinalizados(char nombreArchivo[])
 {
-    printf("\n--- DATOS DEL ALQUILER  ---\n");
-    printf("ID:                  %d\n", aux.id);
-    printf("DNI:                 %s\n", aux.dniCliente);
-    printf("Patente:             %s\n", aux.patente);
-    printf("Inicio de alquiler:  %d/%d/%d\n", aux.fechaInicio.dia, aux.fechaInicio.mes, aux.fechaInicio.anio);
-    printf("Fin de alquiler:     %d/%d/%d\n", aux.fechaFin.dia, aux.fechaFin.mes, aux.fechaFin.anio);
-    printf("Costo total:         $%.2f\n", aux.costoTotal);
+    stAlquiler aux;
+
+    FILE *archi = NULL;
+
+    archi = fopen(nombreArchivo, "rb");
+
+    if(archi != NULL)
+    {
+
+        while(fread(&aux, sizeof(stAlquiler), 1, archi) > 0)
+        {
+            if(strcmp(aux.patente, patenteBuscada) == 0 && aux.eliminado == 1)
+            {
+                mostrarUnAlquiler(aux);
+            }
+        }
+        fclose(archi);
+    }
+    else
+    {
+        printf("Error: no se pudo abrir el archivo.\n");
+    }
 }
 
 //○------------------------------ Listados --------------------------------
@@ -497,7 +528,7 @@ int PasarAlquileresAunArreglo(char nombreArchivo[], stAlquiler **arreglo)
     }
     return cantidad;
 }
-//---------OR. POR SELECCION--------
+//---------OR. POR SELECCION (POR PATENTES DEL VEHICULO ALQUILADO)--------
 void OrdenarAlquileresPorSeleccion(stAlquiler arreglo[], int cantidad)
 {
     int i;
@@ -522,7 +553,7 @@ void OrdenarAlquileresPorSeleccion(stAlquiler arreglo[], int cantidad)
     }
 }
 
-//---------OR. POR INSERCION--------
+//---------OR. POR INSERCION (POR COSTO TOTAL)--------
 void ordenarAlquileresPorInsercion(stAlquiler arreglo[], int cantidad)
 {
     int i = 1;
