@@ -13,6 +13,7 @@ typedef struct
 {
     int id;
     char patente[DIM_PATENTE];
+    char tipo[DIM_STRINGS];
     char marca[DIM_STRINGS];
     char modelo[DIM_STRINGS];
     int kilometraje;
@@ -27,6 +28,7 @@ void menuVehiculos(char nombreArchivo[]);
 //FUNCIONES PARA CARGAR VEHICULOS
 void altaVehiculo(char nombreArchivo[]);
 int validarPatenteEnArchivo(char nombreArchivo[], char dominio[]);
+void ingresarTipoVehiculo(char destino[]);
 void cargarVehiculo(stVehiculo *aux);
 int contarVehiculosEnArchivo(char nombreArchivo[]);
 int obtenerNuevoId(char nombreArchivo[]);
