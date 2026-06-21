@@ -76,6 +76,9 @@ void altaVehiculo(char nombreArchivo[])
                 fgets(dominio, DIM_STRINGS, stdin);
                 limpiarSaltoLinea(dominio);
 
+                // Funcion para convertir a mayusculas la patente ingresada
+                strupr(dominio);
+
                 patenteRepetidaArchivo = validarPatenteEnArchivo(nombreArchivo, dominio);
 
                 if(patenteRepetidaArchivo == 1)
@@ -88,9 +91,11 @@ void altaVehiculo(char nombreArchivo[])
 
             strcpy(aux.patente, dominio);
 
+            ingresarTipoVehiculo(aux.tipo);
+
             cargarVehiculo(&aux);
 
-            aux.id = obtenerNuevoId(nombreArchivo) + 1;
+            aux.id = obtenerNuevoId(nombreArchivo);
 
             FILE *archi = NULL;
 
@@ -127,6 +132,7 @@ void altaVehiculo(char nombreArchivo[])
 int validarPatenteEnArchivo(char nombreArchivo[], char dominio[])
 {
     stVehiculo aux;
+
     int encontrado = 0;
 
     FILE *archi = NULL;
@@ -150,6 +156,36 @@ int validarPatenteEnArchivo(char nombreArchivo[], char dominio[])
     }
 
     return encontrado;
+}
+
+void ingresarTipoVehiculo(char destino[])
+{
+    int opcion;
+
+    char tiposVehiculos[3][DIM_STRINGS] = {"Sedan","SUV","Pick-Up"};
+
+    do
+    {
+        printf("\n\n======TIPOS DE VEHICULOS======\n");
+        printf("1.%s\n", tiposVehiculos[0]);
+        printf("2.%s\n", tiposVehiculos[1]);
+        printf("3.%s\n", tiposVehiculos[2]);
+
+        printf("Que tipo de vehiculo desea ingresar (1-3): ");
+        scanf("%d", &opcion);
+
+        if(opcion < 1 || opcion > 3)
+        {
+            printf("Opcion incorrecta. Intente nuevamente\n");
+        }
+        else
+        {
+            printf("Tipo de vehiculo seleccionado: %s\n", tiposVehiculos[opcion - 1]);
+        }
+    }
+    while(opcion < 1 || opcion > 3);
+
+    strcpy(destino, tiposVehiculos[opcion - 1]);
 }
 
 // CARGA LOS DATOS DE UN VEHICULO POR TECLADO
@@ -225,7 +261,7 @@ int obtenerNuevoId(char nombreArchivo[])
         fclose(archi);
     }
 
-    return maxId;
+    return maxId + 1;
 }
 
 // BAJA LOGICA
@@ -353,13 +389,14 @@ void mostrarVehiculosRecursivamente(FILE *archi, int contador)
 
         if(aux.eliminado == 0)
         {
-            printf("\n\n--- Vehiculo #%d ---\n\n", contador);
-            printf("ID:            %d\n",     aux.id);
-            printf("Patente:       %s\n",     aux.patente);
-            printf("Marca:         %s\n",     aux.marca);
-            printf("Modelo:        %s\n",     aux.modelo);
-            printf("Kilometraje:   %d km\n",  aux.kilometraje);
-            printf("Precio/dia:    $%.2f\n",  aux.precioPorDia);
+            printf("\n\n---- Vehiculo #%d ----\n\n", contador);
+            printf("ID:               %d\n", aux.id);
+            printf("Patente:          %s\n", aux.patente);
+            printf("Tipo de vehiculo: %s\n", aux.tipo);
+            printf("Marca:            %s\n", aux.marca);
+            printf("Modelo:           %s\n", aux.modelo);
+            printf("Kilometraje:      %d km\n", aux.kilometraje);
+            printf("Precio/dia:       $%.2f\n", aux.precioPorDia);
 
             if(aux.disponible == 0)
             {
@@ -392,6 +429,9 @@ void buscarYMostrarVehiculo(char nombreArchivo[])
         fgets(patenteBuscada, DIM_PATENTE, stdin);
         limpiarSaltoLinea(patenteBuscada);
 
+        // Funcion para convertir a mayusculas la patente ingresada
+        strupr(patenteBuscada);
+
         while(fread(&aux, sizeof(stVehiculo), 1, archi) > 0 && encontrado == 0)
         {
             if(strcmp(aux.patente, patenteBuscada) == 0 && aux.eliminado == 0)
@@ -410,19 +450,20 @@ void buscarYMostrarVehiculo(char nombreArchivo[])
     }
     else
     {
-        printf("Error: no se pudo abrir el archivo.\n");
+        printf("\nERROR: No hay vehiculos cargados\n");
     }
 }
 
 void mostrarUnVehiculo(stVehiculo aux)
 {
     printf("\n--- VEHICULO ENCONTRADO ---\n");
-    printf("ID:            %d\n",     aux.id);
-    printf("Patente:       %s\n",     aux.patente);
-    printf("Marca:         %s\n",     aux.marca);
-    printf("Modelo:        %s\n",     aux.modelo);
-    printf("Kilometraje:   %d km\n",  aux.kilometraje);
-    printf("Precio/dia:    $%.2f\n",  aux.precioPorDia);
+    printf("ID:               %d\n", aux.id);
+    printf("Patente:          %s\n", aux.patente);
+    printf("Tipo de vehiculo: %s\n", aux.tipo);
+    printf("Marca:            %s\n", aux.marca);
+    printf("Modelo:           %s\n", aux.modelo);
+    printf("Kilometraje:      %d km\n", aux.kilometraje);
+    printf("Precio/dia:       $%.2f\n", aux.precioPorDia);
 
     if(aux.disponible == 0)
     {
@@ -481,7 +522,7 @@ void menuOrdenacionVehiculos(char nombreArchivo[])
     }
     else
     {
-        printf("\nNo hay vehiculos registrados activos en el sistema para ordenar.\n");
+        printf("\nERROR: No hay vehiculos cargados\n");
     }
 }
 
@@ -585,12 +626,13 @@ void mostrarArregloVehiculos(stVehiculo arreglo[], int validos)
         for(int i = 0; i < validos; i++)
         {
             printf("\n\n--- Vehiculo #%d ---\n\n", i + 1);
-            printf("ID:            %d\n",     arreglo[i].id);
-            printf("Patente:       %s\n",     arreglo[i].patente);
-            printf("Marca:         %s\n",     arreglo[i].marca);
-            printf("Modelo:        %s\n",     arreglo[i].modelo);
-            printf("Kilometraje:   %d km\n",  arreglo[i].kilometraje);
-            printf("Precio/dia:    $%.2f\n",  arreglo[i].precioPorDia);
+            printf("ID:               %d\n", arreglo[i].id);
+            printf("Patente:          %s\n", arreglo[i].patente);
+            printf("Tipo de vehiculo: %s\n", arreglo[i].tipo);
+            printf("Marca:            %s\n", arreglo[i].marca);
+            printf("Modelo:           %s\n", arreglo[i].modelo);
+            printf("Kilometraje:      %d km\n", arreglo[i].kilometraje);
+            printf("Precio/dia:       $%.2f\n", arreglo[i].precioPorDia);
 
             if(arreglo[i].disponible == 0)
             {
@@ -612,3 +654,115 @@ void limpiarSaltoLinea(char cadena[])
 
     cadena[posicion] = '\0';
 }
+
+//MUESTRA LAS PATENTES DE LOS VEHICULOS DISPONIBLES
+void mostrarPatentesDisponiblesPorTipo(char nombreArchivo[], char tipoBuscado[])
+{
+    stVehiculo aux;
+
+    FILE *archi = NULL;
+
+    archi = fopen(nombreArchivo, "rb");
+
+    if(archi != NULL)
+    {
+        while(fread(&aux, sizeof(stVehiculo), 1, archi) > 0)
+        {
+            if(strcmp(aux.tipo, tipoBuscado) == 0 && aux.eliminado == 0 && aux.disponible == 0)
+            {
+                printf("\nPatente de vehiculo disponible: |%s|\n", aux.patente);
+            }
+        }
+    }
+    else
+    {
+        printf("\nERROR: No hay vehiculos cargados\n");
+    }
+}
+
+//VALIDAR PATENTE POR TIPO DE VEHICULO
+int verificarVehiculoPorPatenteYTipo(char nombreArchivo[], char patenteBuscada[], char tipoBuscado[])
+{
+    stVehiculo aux;
+
+    int estado = 0;
+
+    FILE *archi = NULL;
+
+    archi = fopen(nombreArchivo, "rb");
+
+    if(archi != NULL)
+    {
+        while(fread(&aux, sizeof(stVehiculo), 1, archi) > 0 && estado == 0)
+        {
+            if(strcmp(patenteBuscada, aux.patente) == 0 && strcmp(tipoBuscado, aux.tipo) == 0 && aux.eliminado == 0)
+            {
+                if(aux.disponible == 0)
+                {
+                    estado = 1;
+                }
+                else
+                {
+                    estado = -1;
+                }
+            }
+        }
+        fclose(archi);
+    }
+
+    return estado;
+}
+
+//CAMBIAR EL CAMPO DISPONIBLE SI SE ALQUILO ESE AUTO
+void cambiarDisponibilidadVehiculo(char nombreArchivo[], char patenteBuscada[], int nuevoEstado)
+{
+    stVehiculo aux;
+    int encotrado = 0;
+
+    FILE *archi = NULL;
+
+    archi = fopen(nombreArchivo, "r+b");
+
+    if(archi != NULL)
+    {
+        while(fread(&aux, sizeof(stVehiculo), 1, archi) > 0 && encotrado == 0)
+        {
+            if(strcmp(aux.patente, patenteBuscada) == 0 && aux.eliminado == 0)
+            {
+                aux.disponible = nuevoEstado;
+
+                encotrado = 1;
+
+                fseek(archi, (-1) * sizeof(stVehiculo), SEEK_CUR);
+
+                fwrite(&aux, sizeof(stVehiculo), 1, archi);
+
+                fseek(archi, 0, SEEK_CUR);
+            }
+        }
+        fclose(archi);
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
