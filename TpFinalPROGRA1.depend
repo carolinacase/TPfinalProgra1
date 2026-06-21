@@ -12,10 +12,10 @@
 	"Clientes.h"
 	"alquileres.h"
 
-1781923935 source:c:\users\martin\documents\github\tpfinalprogra1\vehiculos.c
+1782010742 source:c:\users\martin\documents\github\tpfinalprogra1\vehiculos.c
 	"Vehiculos.h"
 
-1781923553 c:\users\martin\documents\github\tpfinalprogra1\vehiculos.h
+1782010742 c:\users\martin\documents\github\tpfinalprogra1\vehiculos.h
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
@@ -77,8 +77,9 @@
 	<stdlib.h>
 	<string.h>
 
-1781916341 source:c:\users\martin\documents\github\tpfinalprogra1\alquileres.c
+1782011974 source:c:\users\martin\documents\github\tpfinalprogra1\alquileres.c
 	"alquileres.h"
+	<time.h>
 
 1781916341 c:\users\martin\documents\github\tpfinalprogra1\alquileres.h
 	<stdio.h>

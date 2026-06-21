@@ -66,5 +66,8 @@ void mostrarArregloVehiculos(stVehiculo arreglo[], int validos);
 
 //FUNCIONES EXTRAS
 void limpiarSaltoLinea(char cadena[]);
+void mostrarPatentesDisponiblesPorTipo(char nombreArchivo[], char tipoBuscado[]);
+int verificarVehiculoPorPatenteYTipo(char nombreArchivo[], char patenteBuscada[], char tipoBuscado[]);
+void cambiarDisponibilidadVehiculo(char nombreArchivo[], char patenteBuscada[], int nuevoEstado);
 
 #endif // VEHICULOS_H_INCLUDED
