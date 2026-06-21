@@ -385,8 +385,8 @@ void OrdenarClientesPorSeleccion(stCliente arreglo[], int cantidad)
 void mostrarArrDeClientes(stCliente arreglo[], int cantidad)
 {
     printf("\n--- CLIENTES ORDENADOS ALFABETICAMENTE ---\n");
-    int i;
-    for(i = 0; i < cantidad; i++)
+
+    for(int i = 0; i < cantidad; i++)
         mostrarUnCliente(arreglo[i]);
 }
 
@@ -394,13 +394,12 @@ void mostrarArrDeClientes(stCliente arreglo[], int cantidad)
 //(campo a elegir de acuerdo a las structs elegidas)
 
 //Ordenar por insercion - en relacion a su numero de Dni (ordena clientes de menores a mayores)
-
 void ordenarArregloPorInsercion(stCliente arreglo[], int cantidad)
 {
     int i = 1;
     while(i < cantidad)
     {
-        insertar(arreglo, i-1, arreglo[i]);
+        insertarDato(arreglo, i-1, arreglo[i]);  // insertarDato, no insertar
         i++;
     }
 }

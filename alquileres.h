@@ -43,13 +43,13 @@ void bajaAlquiler(char nombreArchivo[]);
 void mostrarAlquileres(char nombreArchivo[]);
 void mostrarAlquileresRecursivamente(FILE *archi);
 void MostrarAlquileresFinalizados(char nombreArchivo[]);
+void mostrarArrDeAlquileres (stAlquiler ArregloAlq[], int cantidad);
+//FUNCION PARA FILTRAR POR PATENTE Y MOSTRAR UN ALQUILER
+void buscarYMostrarAlquiler(char nombreArchivo[]);
+void mostrarUnAlquiler(stAlquiler aux);
 
 //FUNCION PARA MODIFICAR
 void modificarAlquiler(char nombreArchivo[]);
-
-//FUNCION PARA BUSCAR Y MOSTRAR UN ALQUILER
-void buscarYMostrarAlquiler(char nombreArchivo[]);
-void mostrarUnAlquiler(stAlquiler aux);
 
 //FUNCION PARA PASAR LOS ALQUILERES EXISTENTES EN EL ARCHIVO A UN ARREGLO DINAMICO
 int PasarAlquileresAunArreglo(char nombreArchivo[], stAlquiler **arreglo);
