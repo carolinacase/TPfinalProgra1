@@ -1,5 +1,6 @@
 #include "alquileres.h"
 #include <time.h>
+#include "pila.h"
 
 void menuAlquileres(char archivoAlquileres[], char archivoVehiculos[], char archivoClientes[])
 {
@@ -665,3 +666,62 @@ void insercionDeDato(stAlquiler arreglo[], int ultPos, stAlquiler aux)
     }
     arreglo[i+1] = aux;
 }
+
+void mostrarAlquileresRecientes(char nombreArchivo[])
+{
+    Pila destino;
+    inicpila(&destino);
+
+    copiarIdsAPila(nombreArchivo, &destino);
+
+    char continuar = 's';
+
+    while(continuar == 's')
+    {
+        mostrarAlquileresPorId();
+
+        printf("Desea seguir viendo mas alquileres? (s/n): ");
+        scanf(" %c", &continuar);
+    }
+}
+
+void copiarIdsAPila(char nombreArchivo[], Pila *destino)
+{
+    stAlquiler aux;
+
+    FILE *archi = NULL;
+    archi = fopen(nombreArchivo, "rb");
+
+    if(archi != NULL)
+    {
+        while(fread(&aux, sizeof(stVehiculo), 1, archi) > 0)
+        {
+            if(aux.eliminado == 0)
+            {
+                apilar(destino, aux.id);
+            }
+        }
+    }
+    else
+    {
+        printf("\nERROR: No hay vehiculos cargados\n");
+    }
+}
+
+void mostrarAlquileresPorId()
+{
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
