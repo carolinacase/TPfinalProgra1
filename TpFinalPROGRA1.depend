@@ -4,15 +4,16 @@
 	<stdlib.h>
 	<string.h>
 
-1781755304 source:c:\users\martin\documents\github\tpfinalprogra1\main.c
+1782094581 source:c:\users\martin\documents\github\tpfinalprogra1\main.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
+	"pila.h"
 	"Vehiculos.h"
 	"Clientes.h"
 	"alquileres.h"
 
-1782010742 source:c:\users\martin\documents\github\tpfinalprogra1\vehiculos.c
+1782094747 source:c:\users\martin\documents\github\tpfinalprogra1\vehiculos.c
 	"Vehiculos.h"
 
 1782010742 c:\users\martin\documents\github\tpfinalprogra1\vehiculos.h
@@ -69,7 +70,7 @@
 1781857673 source:c:\users\caro\documents\github\tpfinalprogra1\vehiculos.c
 	"Vehiculos.h"
 
-1781916341 source:c:\users\martin\documents\github\tpfinalprogra1\clientes.c
+1782060000 source:c:\users\martin\documents\github\tpfinalprogra1\clientes.c
 	"Clientes.h"
 
 1781820293 c:\users\martin\documents\github\tpfinalprogra1\clientes.h
@@ -77,16 +78,18 @@
 	<stdlib.h>
 	<string.h>
 
-1782011974 source:c:\users\martin\documents\github\tpfinalprogra1\alquileres.c
+1782098474 source:c:\users\martin\documents\github\tpfinalprogra1\alquileres.c
 	"alquileres.h"
 	<time.h>
+	"pila.h"
 
-1781916341 c:\users\martin\documents\github\tpfinalprogra1\alquileres.h
+1782096246 c:\users\martin\documents\github\tpfinalprogra1\alquileres.h
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
 	"Vehiculos.h"
 	"Clientes.h"
+	"pila.h"
 
 1781708580 source:c:\users\melina\onedrive\documentos\github\tpfinalprogra1\clientes.c
 	"Clientes.h"
@@ -116,4 +119,10 @@
 	<string.h>
 	"Vehiculos.h"
 	"Clientes.h"
+
+1782094581 c:\users\martin\documents\github\tpfinalprogra1\pila.h
+
+1782094581 source:c:\users\martin\documents\github\tpfinalprogra1\pila.c
+	<stdio.h>
+	"pila.h"
 

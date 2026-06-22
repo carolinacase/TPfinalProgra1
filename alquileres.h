@@ -6,6 +6,7 @@
 #include <string.h>
 #include "Vehiculos.h"
 #include "Clientes.h"
+#include "pila.h"
 
 typedef struct
 {
@@ -58,5 +59,10 @@ int PasarAlquileresAunArreglo(char nombreArchivo[], stAlquiler **arreglo);
 void OrdenarAlquileresPorSeleccion(stAlquiler arreglo[], int cantidad);
 void ordenarAlquileresPorInsercion(stAlquiler arreglo[], int cantidad);
 void insercionDeDato(stAlquiler arreglo[], int ultPos, stAlquiler aux);
+
+//FUNCIONES PARA MOSTRAR LOS ALQUILERES RECIENTES
+void mostrarAlquileresRecientesEnPila(char nombreArchivo[]);
+void copiarIdsAPila(char nombreArchivo[], Pila *destino);
+void mostrarAlquileresPorId(char nombreArchivo[], int id);
 
 #endif

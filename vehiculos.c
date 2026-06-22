@@ -195,11 +195,13 @@ void cargarVehiculo(stVehiculo *aux)
     fflush(stdin);
     fgets(aux->marca, DIM_STRINGS, stdin);
     limpiarSaltoLinea(aux->marca);
+    strupr(aux->marca);
 
     printf("Ingrese el modelo: ");
     fflush(stdin);
     fgets(aux->modelo, DIM_STRINGS, stdin);
     limpiarSaltoLinea(aux->modelo);
+    strupr(aux->modelo);
 
     printf("Ingrese el kilometraje: ");
     fflush(stdin);

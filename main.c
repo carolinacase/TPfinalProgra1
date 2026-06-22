@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "pila.h"
 
 #include "Vehiculos.h"
 #include "Clientes.h"

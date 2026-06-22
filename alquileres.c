@@ -1,5 +1,6 @@
 #include "alquileres.h"
 #include <time.h>
+#include "pila.h"
 
 void menuAlquileres(char archivoAlquileres[], char archivoVehiculos[], char archivoClientes[])
 {
@@ -18,6 +19,7 @@ void menuAlquileres(char archivoAlquileres[], char archivoVehiculos[], char arch
         printf("5. Ordenar alquileres\n");
         printf("6. Mostrar alquileres Activos\n");
         printf("7. Mostrar alquileres Finalizados\n");
+        printf("8. Mostrar alquileres recientes\n");
         printf("0. Volver al menu principal\n");
 
         printf("\nIngrese una opcion: ");
@@ -74,6 +76,9 @@ void menuAlquileres(char archivoAlquileres[], char archivoVehiculos[], char arch
             break;
         case 7:
             MostrarAlquileresFinalizados(archivoAlquileres);
+            break;
+        case 8:
+            mostrarAlquileresRecientesEnPila(archivoAlquileres);
             break;
         case 0:
             break;
@@ -597,9 +602,11 @@ void mostrarArrDeAlquileres (stAlquiler ArregloAlq[], int cantidad)
 int PasarAlquileresAunArreglo(char nombreArchivo[], stAlquiler **arreglo)
 {
     int cantidad = 0;
+
     stAlquiler aux;
 
     FILE *archi = fopen(nombreArchivo, "rb");
+
     if(archi != NULL)
     {
         while(fread(&aux, sizeof(stAlquiler), 1, archi) > 0)
@@ -607,7 +614,9 @@ int PasarAlquileresAunArreglo(char nombreArchivo[], stAlquiler **arreglo)
             if(aux.eliminado == 0)
             {
                 *arreglo = realloc(*arreglo, (cantidad + 1) * sizeof(stAlquiler));
+
                 (*arreglo)[cantidad] = aux;
+
                 cantidad++;
             }
         }
@@ -665,3 +674,93 @@ void insercionDeDato(stAlquiler arreglo[], int ultPos, stAlquiler aux)
     }
     arreglo[i+1] = aux;
 }
+
+//FUNCIONES PARA MOSTRAR LOS ALQUILERES RECIENTES
+void mostrarAlquileresRecientesEnPila(char nombreArchivo[])
+{
+    Pila destino;
+    inicpila(&destino);
+
+    copiarIdsAPila(nombreArchivo, &destino);
+
+    if(!pilavacia(&destino))
+    {
+        char continuar = 's';
+
+        while(continuar == 's' && !pilavacia(&destino))
+        {
+            mostrarAlquileresPorId(nombreArchivo, desapilar(&destino));
+
+            if(!pilavacia(&destino))
+            {
+                printf("Desea ver el alquiler anterior? (s/n): ");
+                scanf(" %c", &continuar);
+            }
+            else
+            {
+                printf("\n[SISTEMA]: Se ha llegado al final del historial de alquileres.\n");
+            }
+        }
+    }
+    else
+    {
+        printf("\nNo hay alquileres disponibles para mostrar\n");
+    }
+
+}
+
+void copiarIdsAPila(char nombreArchivo[], Pila *destino)
+{
+    stAlquiler aux;
+
+    FILE *archi = NULL;
+    archi = fopen(nombreArchivo, "rb");
+
+    if(archi != NULL)
+    {
+        while(fread(&aux, sizeof(stAlquiler), 1, archi) > 0)
+        {
+            if(aux.eliminado == 0)
+            {
+                apilar(destino, aux.id);
+            }
+        }
+    }
+    else
+    {
+        printf("\nERROR: No hay vehiculos cargados\n");
+    }
+}
+
+void mostrarAlquileresPorId(char nombreArchivo[], int id)
+{
+    stAlquiler aux;
+
+    FILE *archi = NULL;
+    archi = fopen(nombreArchivo, "rb");
+
+    if(archi != NULL)
+    {
+        fseek(archi, (id - 1) * sizeof(stAlquiler), SEEK_SET);
+        fread(&aux, sizeof(stAlquiler), 1, archi);
+
+        mostrarUnAlquiler(aux);
+    }
+    else
+    {
+        printf("\nERROR: No hay vehiculos cargados\n");
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
