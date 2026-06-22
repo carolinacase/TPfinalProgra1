@@ -19,12 +19,14 @@ int main()
 
     do
     {
-        printf("\n------SISTEMA DE ALQUILER DE VEHICULOS------\n");
-        printf("1. Gestion de vehiculos\n");
-        printf("2. Gestion de clientes\n");
-        printf("3. Gestion de alquileres\n");
+        printf("============================================\n");
+        printf("    SISTEMA DE ALQUILER DE VEHICULOS        \n");
+        printf("============================================\n");
+        printf("1. Gestion de Vehiculos\n");
+        printf("2. Gestion de Clientes\n");
+        printf("3. Gestion de Alquileres\n");
         printf("0. Salir\n");
-        printf("--------------------------------------------\n");
+        printf("============================================\n");
         printf("Ingrese una opcion: ");
         scanf("%d", &opcion);
         switch(opcion)
